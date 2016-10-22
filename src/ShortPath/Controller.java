@@ -1,4 +1,5 @@
-package sample;
+package ShortPath;
 
 public class Controller {
+
 }
