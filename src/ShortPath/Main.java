@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.*;
+import javafx.scene.canvas.*;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -16,12 +18,16 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
     Button GeneratePolygons = new Button();
     Button ShortestPath = new Button();
+    Canvas drawingarea = new Canvas();
 
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Obstacle Ground Modified from mac");
+        drawingarea.setHeight(1100);
+        drawingarea.setWidth(1400);
+
 
         HBox HBoxPane = new HBox();
         BorderPane Border_Pane = new BorderPane();
@@ -38,6 +44,11 @@ public class Main extends Application implements EventHandler<ActionEvent>{
         ShortestPath.setOnAction(this);
 
         Border_Pane.setTop(HBoxPane);
+        Border_Pane.setCenter(drawingarea);
+
+        GraphicsContext gc = drawingarea.getGraphicsContext2D();
+        gc.setFill(Color.AQUA);
+        gc.fillRect(0,0,gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
 
         Scene theScene = new Scene(Border_Pane,1500,1100);
         primaryStage.setScene(theScene);
