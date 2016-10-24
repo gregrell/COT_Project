@@ -16,24 +16,24 @@ import javafx.stage.Stage;
 
 public class Main extends Application implements EventHandler<ActionEvent>{
 
-    static int viewWidth = 1400;
-    static int viewHeight = 1050;
-    static int gridsize = 10000;
-    static int numObstacles = 2000;
-    static Color gridColor = Color.DARKBLUE;
-    static Color fontColor = Color.WHITE;
-    static String windowTitle = "Obstacle Ground";
+    private static final int viewWidth = 1400;
+    private static final int viewHeight = 1050;
+    private static final int gridsize = 10000;
+    private static final int numObstacles = 2000;
+    private static final Color gridColor = Color.DARKBLUE;
+    private static final Color fontColor = Color.WHITE;
+    private static final String windowTitle = "Obstacle Ground";
 
-    Button GeneratePolygons = new Button();
-    Button ShortestPath = new Button();
-    Canvas drawingarea = new Canvas();
-    GraphicsContext gc = drawingarea.getGraphicsContext2D();
-    ObstacleRange range;
+    private final Button GeneratePolygons = new Button();
+    private final Button ShortestPath = new Button();
+    private final Canvas drawingarea = new Canvas();
+    private final GraphicsContext gc = drawingarea.getGraphicsContext2D();
+    private ObstacleRange range;
 
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        @SuppressWarnings("UnusedAssignment") Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle(windowTitle);
 
         drawingarea.setHeight(viewHeight);
@@ -83,7 +83,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
             //generate obstacle field
             gc.setFill(Color.RED);
-            if(ObstacleRange.exists==false){
+            if(!ObstacleRange.exists){
                 range = new ObstacleRange(gridsize, gridsize, numObstacles);
             }
             else{
@@ -114,12 +114,12 @@ public class Main extends Application implements EventHandler<ActionEvent>{
     }
 
 
-    public void clearCanvas(){
+    private void clearCanvas(){
         gc.clearRect(0,0,gc.getCanvas().getWidth(),gc.getCanvas().getHeight());
         colorCanvas();
     }
 
-    public void colorCanvas(){
+    private void colorCanvas(){
         gc.setFill(gridColor);
         gc.fillRect(0,0,gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
     }

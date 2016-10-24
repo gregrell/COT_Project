@@ -5,17 +5,17 @@ import java.util.Arrays;
 /**
  * Created by gregrell on 10/23/16.
  */
-public class ObstacleRange {
-    int xSize;
-    int ySize;
-    int Obstacles;
+class ObstacleRange {
+    private final int xSize;
+    private final int ySize;
+    private final int Obstacles;
 
-    boolean[][] grid;
-    PointObstacleGenerator pointGenerator;
+    final boolean[][] grid;
+    private PointObstacleGenerator pointGenerator;
     static boolean exists =false;
 
 
-    public ObstacleRange(int xSize, int ySize, int obstaclesIn){
+    public ObstacleRange(@SuppressWarnings("SameParameterValue") int xSize, @SuppressWarnings("SameParameterValue") int ySize, @SuppressWarnings("SameParameterValue") int obstaclesIn){
         exists =true;
         this.xSize=xSize;
         this.ySize=ySize;

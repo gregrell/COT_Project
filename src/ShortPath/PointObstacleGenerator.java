@@ -8,12 +8,13 @@ import java.util.Random;
  * Created by gregrell on 10/23/16.
  *
  */
-public class PointObstacleGenerator {
+class PointObstacleGenerator {
+    @SuppressWarnings("unused")
     int numObstacles;
-    List <Point> pointsList;
-    Random rnd;
-    int xBound;
-    int yBound;
+    final List <Point> pointsList;
+    private final Random rnd;
+    private final int xBound;
+    private final int yBound;
 
     public PointObstacleGenerator(int quantity, int xBound, int yBound){
         this.rnd = new Random();
@@ -23,7 +24,7 @@ public class PointObstacleGenerator {
     }
 
 
-    public List<Point> generatePoints (int n){
+    private List<Point> generatePoints(int n){
         List <Point> newPointList = new ArrayList<Point>();
 
         for(int i=0; i<n; i++){
@@ -32,6 +33,7 @@ public class PointObstacleGenerator {
         return newPointList;
     }
 
+    @SuppressWarnings("unused")
     public List<Point> getPointsList(){
         return pointsList;
     }
