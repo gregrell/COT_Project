@@ -7,11 +7,10 @@ class Point {
     final int x;
     final int y;
     @SuppressWarnings("unused")
-    private final int value;
-    public Point(int x, int y, int value){
+
+    public Point(int x, int y){
         this.x=x;
         this.y=y;
-        this.value=value;
     }
 
 }

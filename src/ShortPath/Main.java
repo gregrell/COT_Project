@@ -14,12 +14,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import java.util.List;
+
 public class Main extends Application implements EventHandler<ActionEvent>{
 
     private static final int viewWidth = 1400;
     private static final int viewHeight = 1050;
-    private static final int gridsize = 10000;
-    private static final int numObstacles = 2000;
+    private static final int gridsize = 2000;
+    private static final int numObstacles = 20;
     private static final Color gridColor = Color.DARKBLUE;
     private static final Color fontColor = Color.WHITE;
     private static final String windowTitle = "Obstacle Ground";
@@ -100,9 +102,25 @@ public class Main extends Application implements EventHandler<ActionEvent>{
                         }
                     }
                 }
+            //TODO remove this test logic
+            PolygonObstacleGenerator tmp = range.getPolygonGenerator();
+            List<Polygon> tmp_polygons = tmp.getPolygons();
+
+
+
+            for(int j=0;j<tmp.getNumberOfPolygonObstacles();j++){
+                double[] x = tmp_polygons.get(j).getXpointsAsDouble();
+                double[] y = tmp_polygons.get(j).getYpointsAsDouble();
+                gc.fillPolygon(x,y,x.length);
+            }
             // set text at top of obstacle screen view
             gc.strokeText(range.toString(),5,15);
-            }
+
+            //TODO remove this
+            //gc.strokePolygon(new double[]{100,200,300,40},new double[]{500,600,700,80},4);
+            //gc.fillPolygon(new double[]{100,40,30,40,60,100},new double[]{100,60,70,80,100,50},6);
+
+        }
 
 
 

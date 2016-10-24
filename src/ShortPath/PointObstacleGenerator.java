@@ -28,7 +28,7 @@ class PointObstacleGenerator {
         List <Point> newPointList = new ArrayList<Point>();
 
         for(int i=0; i<n; i++){
-            newPointList.add(new Point(rnd.nextInt(xBound),rnd.nextInt(yBound),i));
+            newPointList.add(new Point(rnd.nextInt(xBound),rnd.nextInt(yBound)));
         }
         return newPointList;
     }

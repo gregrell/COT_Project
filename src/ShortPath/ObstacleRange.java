@@ -12,6 +12,7 @@ class ObstacleRange {
 
     final boolean[][] grid;
     private PointObstacleGenerator pointGenerator;
+    private PolygonObstacleGenerator polygonGenerator;
     static boolean exists =false;
 
 
@@ -22,7 +23,8 @@ class ObstacleRange {
         this.Obstacles=obstaclesIn;
 
         grid = new boolean[xSize][ySize];
-        pointGenerator = new PointObstacleGenerator(Obstacles,xSize,ySize);
+        pointGenerator = new PointObstacleGenerator(Obstacles/2,xSize,ySize);
+        polygonGenerator = new PolygonObstacleGenerator(Obstacles/2,xSize,ySize);
         populateGrid();
     }
 
@@ -33,10 +35,13 @@ class ObstacleRange {
     }
 
     private void populateGrid() {
+        //TODO populate grid for polygons
         for(Point p:pointGenerator.pointsList){
             grid[p.x][p.y]=true;
         }
     }
+
+
 
     private void clearGrid(){
         for(int i=0;i<grid.length;i++){
@@ -50,5 +55,9 @@ class ObstacleRange {
                 "xSize (in meters)=" + xSize +
                 ", ySize (in meters)=" + ySize +
                 ", Obstacles=" + Obstacles;
+    }
+
+    public PolygonObstacleGenerator getPolygonGenerator() {
+        return polygonGenerator;
     }
 }
