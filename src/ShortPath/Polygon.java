@@ -10,15 +10,20 @@ public class Polygon {
     List<Point> points;
     Random rnd;
 
+    /*Constructor - generate as many points as fed into the contstructor for the polygon, then sort them in order to generate convex hull*/
+
     public Polygon(int MaxWidth, int MaxHeight, int MaxPoints){
         points = new ArrayList<Point>();
         root=new Point(0,0);
         rnd=new Random();
-        int numPoints = (int)(rnd.nextFloat()*(MaxPoints-4)+4);
+        int numPoints = (int)(rnd.nextFloat()*(MaxPoints-3)+3);
+
         for(int i=0;i<numPoints;i++){
             Point p = new Point(rnd.nextInt(MaxWidth),rnd.nextInt(MaxHeight));
             points.add(p);
         }
+
+
     }
 
     public Point getRoot() {
@@ -62,7 +67,7 @@ public class Polygon {
         double[] xPointsDbl = new double[points.size()];
 
         for(Point p:points){
-            xPointsDbl[i]= ((double) p.x);
+            xPointsDbl[i]= ((double) p.x) + root.x;
 
             i++;
         }
@@ -74,13 +79,19 @@ public class Polygon {
         double[] yPointsDbl = new double[points.size()];
 
         for(Point p:points){
-            yPointsDbl[i]= ((double) p.y);
+            yPointsDbl[i]= ((double) p.y) + root.y;
 
             i++;
         }
-        System.out.println(yPointsDbl[3]);
+
         return yPointsDbl;
     }
+
+
+
+
+
+
 
 
 

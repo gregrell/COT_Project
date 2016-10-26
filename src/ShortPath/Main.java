@@ -20,14 +20,16 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
     private static final int viewWidth = 1400;
     private static final int viewHeight = 1050;
-    private static final int gridsize = 2000;
+    private static final int gridsize = 1000;
     private static final int numObstacles = 20;
     private static final Color gridColor = Color.DARKBLUE;
     private static final Color fontColor = Color.WHITE;
     private static final String windowTitle = "Obstacle Ground";
+    private static final String tempTxt ="ConvexHullTest";
 
     private final Button GeneratePolygons = new Button();
     private final Button ShortestPath = new Button();
+    private final Button TempTest = new Button();
     private final Canvas drawingarea = new Canvas();
     private final GraphicsContext gc = drawingarea.getGraphicsContext2D();
     private ObstacleRange range;
@@ -49,12 +51,16 @@ public class Main extends Application implements EventHandler<ActionEvent>{
         HBoxPane.setPadding(new Insets(5,15,5,15));
         HBoxPane.getChildren().add(GeneratePolygons);
         HBoxPane.getChildren().add(ShortestPath);
+        HBoxPane.getChildren().add(TempTest);
+
         HBoxPane.setStyle("-fx-background-color: #336699;");
         GeneratePolygons.setText("Generate Obstacles");
         ShortestPath.setText("Get Shortest Path");
+        TempTest.setText(tempTxt);
 
         GeneratePolygons.setOnAction(this);
         ShortestPath.setOnAction(this);
+        TempTest.setOnAction(this);
 
         Border_Pane.setTop(HBoxPane);
         Border_Pane.setCenter(drawingarea);
@@ -111,6 +117,11 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             for(int j=0;j<tmp.getNumberOfPolygonObstacles();j++){
                 double[] x = tmp_polygons.get(j).getXpointsAsDouble();
                 double[] y = tmp_polygons.get(j).getYpointsAsDouble();
+                double rootx = (double)tmp_polygons.get(j).root.x;
+                double rooty = (double)tmp_polygons.get(j).root.y;
+
+
+
                 gc.fillPolygon(x,y,x.length);
             }
             // set text at top of obstacle screen view
@@ -127,6 +138,12 @@ public class Main extends Application implements EventHandler<ActionEvent>{
         else if(event.getSource()==ShortestPath) {
             //TODO remove this
             System.out.println("Need to calculate shortest path");
+        }
+        else if(event.getSource()==TempTest) {
+            //TODO remove this
+            System.out.println("Temporary Test Button");
+            Polygon poly = new Polygon(100,100,10);
+            QuickHull qh = new QuickHull(poly.getPoints());
         }
 
     }

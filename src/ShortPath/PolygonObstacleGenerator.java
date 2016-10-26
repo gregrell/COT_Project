@@ -17,8 +17,8 @@ public class PolygonObstacleGenerator {
         rnd = new Random();
         this.numberOfPolygonObstacles=numberOfPolygonObstacles;
         for(int i=0;i<numberOfPolygonObstacles;i++){
-            Polygon p = new Polygon(100,100,10);
-            p.setRoot(new Point(rnd.nextInt(xBound),rnd.nextInt(yBound)));
+            Polygon p = new Polygon(150,150,8);
+            p.setRoot(new Point(rnd.nextInt(xBound),rnd.nextInt(1000)));
             Polygons.add(p);
         }
     }
