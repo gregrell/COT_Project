@@ -67,6 +67,10 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
         gc.setStroke(fontColor);
         colorCanvas();
+        gc.setStroke(fontColor);
+
+        //generate obstacle field
+        gc.setFill(Color.RED);
 
 
         Scene theScene = new Scene(Border_Pane,viewWidth,viewHeight);
@@ -87,10 +91,9 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             Double doubleYbound = gc.getCanvas().getHeight();
             Double xratio=doubleXbound/gridsize;
             Double yratio=doubleYbound/gridsize;
-            gc.setStroke(fontColor);
 
-            //generate obstacle field
             gc.setFill(Color.RED);
+
             if(!ObstacleRange.exists){
                 range = new ObstacleRange(gridsize, gridsize, numObstacles);
             }
@@ -115,8 +118,8 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
 
             for(int j=0;j<tmp.getNumberOfPolygonObstacles();j++){
-                double[] x = tmp_polygons.get(j).getXpointsAsDouble();
-                double[] y = tmp_polygons.get(j).getYpointsAsDouble();
+                double[] x = tmp_polygons.get(j).getHullXpointsAsDouble();
+                double[] y = tmp_polygons.get(j).getHullYpointsAsDouble();
                 double rootx = (double)tmp_polygons.get(j).root.x;
                 double rooty = (double)tmp_polygons.get(j).root.y;
 
@@ -140,10 +143,27 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             System.out.println("Need to calculate shortest path");
         }
         else if(event.getSource()==TempTest) {
+            clearCanvas();
             //TODO remove this
             System.out.println("Temporary Test Button");
             Polygon poly = new Polygon(100,100,10);
-            QuickHull qh = new QuickHull(poly.getPoints());
+
+
+            gc.setFill(Color.GREEN);
+            for(Point p:poly.getPoints()) {
+                gc.fillRect(p.x, p.y, 2, 2);
+            }
+
+            gc.setFill(Color.RED);
+            for(Point p:poly.getHull()) {
+                gc.fillRect(p.x, p.y, 2, 2);
+            }
+
+            gc.strokePolygon(poly.getHullXpointsAsDouble(),poly.getHullYpointsAsDouble(),poly.getHull().size());
+
+
+
+
         }
 
     }

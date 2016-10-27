@@ -59,20 +59,27 @@ public class QuickHull {
         //add to the hull set and remove from the original set
         Hull.add(minX);
         Hull.add(maxX);
+
         pointSet.remove(minX);
         pointSet.remove(maxX);
 
         //construct two sets
         List<Point> S1 = FindAllRight(pointSet,minX,maxX);
         List<Point> S2 = FindAllRight(pointSet,maxX,minX);
+        FindHull(S1,minX,maxX);
+        FindHull(S2,maxX,minX);
+
+
+
 
     }
 
 
 
-
-
-   /*
+    public static List<Point> getHull() {
+        return Hull;
+    }
+/*
     FindHull (Sk, P, Q)
    {
        // Find points on convex hull from the set Sk of points
@@ -92,6 +99,27 @@ public class QuickHull {
 
 
     private void FindHull(List<Point> Sk, Point P, Point Q){
+        double distance=0;
+        double tmp_dist=distance;
+        Point furthest=null;
+
+        for(Point p:Sk){
+            tmp_dist=DistancePointToLine(p,P,Q);
+            if(tmp_dist>distance){
+                distance=tmp_dist;
+                furthest=p;
+            }
+        }
+        if(furthest != null){
+            Hull.add(Hull.indexOf(P)+1,furthest);
+        }
+        if(Sk.size()!=0){
+
+            List<Point> S1 = FindAllRight(Sk,P,furthest);
+            List<Point> S2 = FindAllRight(Sk,furthest,Q);
+            FindHull(S1,P,furthest);
+            FindHull(S2,furthest,Q);
+        }
 
     }
 
@@ -113,7 +141,26 @@ public class QuickHull {
     }
 
     /*Find orthogonal Distance
-    Line given by two points P1=(x1,y1) P2=(x2,y2)
+    Line given by two points P1=(x1,y1) P2=(x2,y2) the distance of (x0,y0) from the line is = abs((y2-y1)x0-(x2-x1)y0+x2y1-y2x1)/sqrt(y2-y1)^2+(x2-x1)^2)
     */
+
+    private double DistancePointToLine (Point P0, Point P1, Point P2){
+        double distance;
+        double numerator;
+        double denominator;
+
+        numerator = (P2.y-P1.y)*P0.x-(P2.x-P1.x)*P0.y+P2.x*P1.y-P2.y*P1.x;
+        Math.abs(numerator);
+        denominator = Math.pow((P2.y-P1.y),2) + Math.pow((P2.x-P1.x),2);
+        denominator=Math.sqrt(denominator);
+
+        distance=numerator/denominator;
+
+        return distance;
+
+    }
+
+
+
 
 }

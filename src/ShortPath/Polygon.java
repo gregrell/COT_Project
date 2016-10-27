@@ -8,6 +8,8 @@ import java.util.*;
 public class Polygon {
     Point root;
     List<Point> points;
+    List<Point> Hull;
+    QuickHull qh;
     Random rnd;
 
     /*Constructor - generate as many points as fed into the contstructor for the polygon, then sort them in order to generate convex hull*/
@@ -23,7 +25,13 @@ public class Polygon {
             points.add(p);
         }
 
+        qh=new QuickHull(points);
+        Hull=qh.getHull();
 
+    }
+
+    public List<Point> getHull() {
+        return Hull;
     }
 
     public Point getRoot() {
@@ -87,7 +95,29 @@ public class Polygon {
         return yPointsDbl;
     }
 
+    public double[] getHullXpointsAsDouble(){
+        int i=0;
+        double[] HullxPointsDbl = new double[Hull.size()];
 
+        for(Point p:Hull){
+            HullxPointsDbl[i]= ((double) p.x) + root.x;
+
+            i++;
+        }
+        return HullxPointsDbl;
+    }
+
+    public double[] getHullYpointsAsDouble(){
+        int i=0;
+        double[] HullyPointsDbl = new double[Hull.size()];
+
+        for(Point p:Hull){
+            HullyPointsDbl[i]= ((double) p.y) + root.x;
+
+            i++;
+        }
+        return HullyPointsDbl;
+    }
 
 
 
