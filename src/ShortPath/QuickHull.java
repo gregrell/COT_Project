@@ -1,5 +1,6 @@
 package ShortPath;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,21 @@ public class QuickHull {
     public static List<Point> Hull;
 
     //Constructor
+    /*
+    Input = a set S of n points
+   Assume that there are at least 2 points in the input set S of points
+   QuickHull (S)
+   {
+       // Find convex hull from the set S of n points
+       Convex Hull := {}
+       Find left and right most points, say A & B, and add A & B to convex hull
+       Segment AB divides the remaining (n-2) points into 2 groups S1 and S2
+           where S1 are points in S that are on the right side of the oriented line from A to B,
+           and S2 are points in S that are on the right side of the oriented line from B to A
+       FindHull (S1, A, B)
+       FindHull (S2, B, A)
+   } */
+
     public QuickHull(List<Point> pointSet){
         Hull = new ArrayList<Point>();
         Point minX=pointSet.get(0);
@@ -47,30 +63,57 @@ public class QuickHull {
         pointSet.remove(maxX);
 
         //construct two sets
-        List<Point> S1 = new ArrayList<Point>();
-        List<Point> S2 = new ArrayList<Point>();
+        List<Point> S1 = FindAllRight(pointSet,minX,maxX);
+        List<Point> S2 = FindAllRight(pointSet,maxX,minX);
+
+    }
+
+
+
+
+
+   /*
+    FindHull (Sk, P, Q)
+   {
+       // Find points on convex hull from the set Sk of points
+       // that are on the right side of the oriented line from P to Q
+       If Sk has no point, then return.
+       From the given set of points in Sk, find farthest point, say C, from segment PQ
+       Add point C to convex hull at the location between P and Q
+       Three points P, Q, and C partition the remaining points of Sk into 3 subsets: S0, S1, and S2
+           where S0 are points inside triangle PCQ, S1 are points on the right side of the oriented
+           line from  P to C, and S2 are points on the right side of the oriented line from C to Q.
+       FindHull(S1, P, C)
+       FindHull(S2, C, Q)
+   }
+   Output = convex hull
+    */
+
+
+
+    private void FindHull(List<Point> Sk, Point P, Point Q){
+
+    }
+
+    /* Function FindAllRight produces a list of points that are right of the line produced by PQ*/
+
+
+    private List<Point> FindAllRight(List<Point> set, Point P, Point Q){
         float d;
-        for(Point p:pointSet){
-            d=((p.getX()- minX.getX())*(maxX.getY()-minX.getY()))-(p.getY()-minX.getY())*(maxX.getX()-minX.getX());
-            if(d<0){
+        List<Point> S1 = new ArrayList<Point>();
+        for(Point p:set){
+            d=((p.getX()- P.getX())*(Q.getY()-P.getY()))-(p.getY()-P.getY())*(Q.getX()-P.getX());
+
+            if(d>0){
                 S1.add(p);
-            }
-            else if(d>0){
-                S2.add(p);
+                //System.out.println(p.getX()+" "+p.getY()+" went right of "+P.getX()+" "+ P.getY()+" to "+Q.getX()+" "+Q.getY());
             }
         }
-        System.out.println(S1);
-
-
+        return S1;
     }
 
-    private void FindHull(){
-
-
-
-    }
-
-
-
+    /*Find orthogonal Distance
+    Line given by two points P1=(x1,y1) P2=(x2,y2)
+    */
 
 }
