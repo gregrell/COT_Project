@@ -123,7 +123,8 @@ public class QuickHull {
 
     }
 
-    /* Function FindAllRight produces a list of points that are right of the line produced by PQ*/
+    /* Function FindAllRight produces a list of points that are right of the line produced by PQ using closed form algebraic equation
+    * d=((p.getX()- P.getX())*(Q.getY()-P.getY()))-(p.getY()-P.getY())*(Q.getX()-P.getX());*/
 
 
     private List<Point> FindAllRight(List<Point> set, Point P, Point Q){
@@ -134,13 +135,12 @@ public class QuickHull {
 
             if(d>0){
                 S1.add(p);
-                //System.out.println(p.getX()+" "+p.getY()+" went right of "+P.getX()+" "+ P.getY()+" to "+Q.getX()+" "+Q.getY());
             }
         }
         return S1;
     }
 
-    /*Find orthogonal Distance
+    /*Find orthogonal Distance using closed form algebraic equation
     Line given by two points P1=(x1,y1) P2=(x2,y2) the distance of (x0,y0) from the line is = abs((y2-y1)x0-(x2-x1)y0+x2y1-y2x1)/sqrt(y2-y1)^2+(x2-x1)^2)
     */
 
