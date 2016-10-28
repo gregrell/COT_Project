@@ -1,6 +1,8 @@
 package ShortPath;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by gregrell on 10/23/16.
@@ -8,45 +10,43 @@ import java.util.Arrays;
 class ObstacleRange {
     private final int xSize;
     private final int ySize;
-    private final int Obstacles;
+    private List<Obstacle> Obstacles = new ArrayList<Obstacle>();
+    private int numObstacles;
+    private int maxsize=500;
 
-    final boolean[][] grid;
+
     private PointObstacleGenerator pointGenerator;
     private PolygonObstacleGenerator polygonGenerator;
     static boolean exists =false;
 
+    List<Polygon> Polygons;
+    List<PointObstacle> Points;
 
-    public ObstacleRange(@SuppressWarnings("SameParameterValue") int xSize, @SuppressWarnings("SameParameterValue") int ySize, @SuppressWarnings("SameParameterValue") int obstaclesIn){
+    public ObstacleRange(@SuppressWarnings("SameParameterValue") int xSize, @SuppressWarnings("SameParameterValue") int ySize, @SuppressWarnings("SameParameterValue") int numObstacles){
         exists =true;
         this.xSize=xSize;
         this.ySize=ySize;
-        this.Obstacles=obstaclesIn;
+        this.numObstacles=numObstacles;
 
-        grid = new boolean[xSize][ySize];
-        pointGenerator = new PointObstacleGenerator(Obstacles/2,xSize,ySize);
-        polygonGenerator = new PolygonObstacleGenerator(Obstacles/2,xSize,ySize);
-        populateGrid();
+        Create();
     }
 
-    public void reCreate(){
-        clearGrid();
-        pointGenerator = new PointObstacleGenerator(Obstacles,xSize,ySize);
-        populateGrid();
-    }
-
-    private void populateGrid() {
-        //TODO populate grid for polygons
-        for(Point p:pointGenerator.pointsList){
-            grid[p.x][p.y]=true;
+    public void Create(){
+        try {
+            Obstacles.clear();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        //pointGenerator = new PointObstacleGenerator(numObstacles/2,xSize,ySize);
+        polygonGenerator = new PolygonObstacleGenerator(numObstacles,xSize,ySize,maxsize);
+        //Points=pointGenerator.getPointsList();
+        Polygons=polygonGenerator.getPolygons();
+        //Obstacles.addAll(Points);
+        Obstacles.addAll(Polygons);
     }
 
-
-
-    private void clearGrid(){
-        for(int i=0;i<grid.length;i++){
-            Arrays.fill(grid[i],false);
-        }
+    public List<Obstacle> getObstacles() {
+        return Obstacles;
     }
 
     @Override
@@ -54,10 +54,7 @@ class ObstacleRange {
         return "Obstacle Range " +
                 "xSize (in meters)=" + xSize +
                 ", ySize (in meters)=" + ySize +
-                ", Obstacles=" + Obstacles;
+                ", Obstacles=" + numObstacles;
     }
 
-    public PolygonObstacleGenerator getPolygonGenerator() {
-        return polygonGenerator;
-    }
 }

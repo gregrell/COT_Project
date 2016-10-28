@@ -5,8 +5,7 @@ import java.util.*;
 /**
  * Created by gregrell on 10/24/16.
  */
-public class Polygon {
-    Point root;
+public class Polygon extends Obstacle {
     List<Point> points;
     List<Point> Hull;
     QuickHull qh;
@@ -112,7 +111,7 @@ public class Polygon {
         double[] HullyPointsDbl = new double[Hull.size()];
 
         for(Point p:Hull){
-            HullyPointsDbl[i]= ((double) p.y) + root.x;
+            HullyPointsDbl[i]= ((double) p.y) + root.y;
 
             i++;
         }

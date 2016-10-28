@@ -12,13 +12,13 @@ public class PolygonObstacleGenerator {
     List<Polygon> Polygons;
     Random rnd;
 
-    public PolygonObstacleGenerator(int numberOfPolygonObstacles, int xBound, int yBound){
+    public PolygonObstacleGenerator(int numberOfPolygonObstacles, int xBound, int yBound,int maxsize){
         Polygons = new ArrayList<Polygon>();
         rnd = new Random();
         this.numberOfPolygonObstacles=numberOfPolygonObstacles;
         for(int i=0;i<numberOfPolygonObstacles;i++){
-            Polygon p = new Polygon(150,150,8);
-            p.setRoot(new Point(rnd.nextInt(xBound),rnd.nextInt(1000)));
+            Polygon p = new Polygon(maxsize,maxsize,8);
+            p.setRoot(new Point(rnd.nextInt(xBound),rnd.nextInt(yBound)));
             Polygons.add(p);
         }
     }

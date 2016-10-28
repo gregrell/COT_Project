@@ -11,7 +11,7 @@ import java.util.Random;
 class PointObstacleGenerator {
     @SuppressWarnings("unused")
     int numObstacles;
-    final List <Point> pointsList;
+    final List <PointObstacle> pointsList;
     private final Random rnd;
     private final int xBound;
     private final int yBound;
@@ -24,17 +24,19 @@ class PointObstacleGenerator {
     }
 
 
-    private List<Point> generatePoints(int n){
-        List <Point> newPointList = new ArrayList<Point>();
+    private List<PointObstacle> generatePoints(int n){
+        List <PointObstacle> newPointObstacleList = new ArrayList <PointObstacle>();
 
         for(int i=0; i<n; i++){
-            newPointList.add(new Point(rnd.nextInt(xBound),rnd.nextInt(yBound)));
+            PointObstacle NewPointObstacle = new PointObstacle(rnd.nextInt(xBound),rnd.nextInt(yBound));
+            NewPointObstacle.setRoot(new Point(NewPointObstacle.p.getX(), NewPointObstacle.p.getY()));
+            newPointObstacleList.add(NewPointObstacle);
         }
-        return newPointList;
+        return newPointObstacleList;
     }
 
     @SuppressWarnings("unused")
-    public List<Point> getPointsList(){
+    public List<PointObstacle> getPointsList(){
         return pointsList;
     }
 

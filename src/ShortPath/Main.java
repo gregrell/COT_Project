@@ -20,8 +20,8 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
     private static final int viewWidth = 1400;
     private static final int viewHeight = 1050;
-    private static final int gridsize = 1000;
-    private static final int numObstacles = 20;
+    private static final int gridsize = 5000;
+    private static final int numObstacles = 10;
     private static final Color gridColor = Color.DARKBLUE;
     private static final Color fontColor = Color.WHITE;
     private static final String windowTitle = "Obstacle Ground";
@@ -84,58 +84,50 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
     @Override
     public void handle(ActionEvent event) {
-        //if button to generate obstacles is pressed
-        if (event.getSource()==GeneratePolygons){
+        /*START OF OBSTACLE GENERATOR EVENTS HANDLER*/
+        if (event.getSource()==GeneratePolygons) {
             clearCanvas();
             Double doubleXbound = gc.getCanvas().getWidth();
             Double doubleYbound = gc.getCanvas().getHeight();
-            Double xratio=doubleXbound/gridsize;
-            Double yratio=doubleYbound/gridsize;
+            Double xratio = doubleXbound / gridsize;
+            Double yratio = doubleYbound / gridsize;
+
+
 
             gc.setFill(Color.RED);
 
-            if(!ObstacleRange.exists){
+            if (!ObstacleRange.exists) {
                 range = new ObstacleRange(gridsize, gridsize, numObstacles);
+            } else {
+                range.Create();
             }
-            else{
-                range.reCreate();
-            }
+
+            // set text at top of obstacle screen view
+            gc.strokeText(range.toString(), 5, 15);
 
 
             // paint the obstacles on the view
-            for(int i=0;i<gridsize;i++){
 
-                    for(int j=0;j<gridsize;j++){
-                        if(range.grid[i][j]==true){
-                            gc.fillRect(i*(xratio),j*(yratio),2,2);
-                        }
-                    }
+            for (Obstacle O:range.getObstacles()) {
+                if(O instanceof PointObstacle){
+                    gc.fillRect(O.getRoot().x*(xratio),O.getRoot().y,5*(yratio),5);
                 }
-            //TODO remove this test logic
-            PolygonObstacleGenerator tmp = range.getPolygonGenerator();
-            List<Polygon> tmp_polygons = tmp.getPolygons();
+                if(O instanceof Polygon){
+                    Polygon p = (Polygon)O;
+                    double[] xpoints=p.getHullXpointsAsDouble();
+                    double[] ypoints=p.getHullYpointsAsDouble();
 
-
-
-            for(int j=0;j<tmp.getNumberOfPolygonObstacles();j++){
-                double[] x = tmp_polygons.get(j).getHullXpointsAsDouble();
-                double[] y = tmp_polygons.get(j).getHullYpointsAsDouble();
-                double rootx = (double)tmp_polygons.get(j).root.x;
-                double rooty = (double)tmp_polygons.get(j).root.y;
-
-
-
-                gc.fillPolygon(x,y,x.length);
+                    for(int i=0;i<xpoints.length;i++){
+                        xpoints[i]=xpoints[i]*xratio;
+                        ypoints[i]=ypoints[i]*yratio;
+                    }
+                    gc.strokePolygon(xpoints,ypoints,p.getHull().size());
+                }
             }
-            // set text at top of obstacle screen view
-            gc.strokeText(range.toString(),5,15);
-
-            //TODO remove this
-            //gc.strokePolygon(new double[]{100,200,300,40},new double[]{500,600,700,80},4);
-            //gc.fillPolygon(new double[]{100,40,30,40,60,100},new double[]{100,60,70,80,100,50},6);
 
         }
 
+/* END OF OBSTACLE GENERATOR EVENT HANDLER*/
 
 
         else if(event.getSource()==ShortestPath) {
