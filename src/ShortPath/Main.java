@@ -20,8 +20,9 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
     private static final int viewWidth = 1400;
     private static final int viewHeight = 1050;
-    private static final int gridsize = 5000;
-    private static final int numObstacles = 10;
+    private static final int gridsize = 8000;
+    private static final int numObstacles = 100;
+    public static final int MaxObstacleSize=500;
     private static final Color gridColor = Color.DARKBLUE;
     private static final Color fontColor = Color.WHITE;
     private static final String windowTitle = "Obstacle Ground";

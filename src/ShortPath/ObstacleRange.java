@@ -12,7 +12,7 @@ class ObstacleRange {
     private final int ySize;
     private List<Obstacle> Obstacles = new ArrayList<Obstacle>();
     private int numObstacles;
-    private int maxsize=500;
+    private int maxsize=Main.MaxObstacleSize; // maximum square size of the obstacle
 
 
     private PointObstacleGenerator pointGenerator;
@@ -38,10 +38,14 @@ class ObstacleRange {
             e.printStackTrace();
         }
         //pointGenerator = new PointObstacleGenerator(numObstacles/2,xSize,ySize);
-        polygonGenerator = new PolygonObstacleGenerator(numObstacles,xSize,ySize,maxsize);
+        polygonGenerator = new PolygonObstacleGenerator(numObstacles,xSize-maxsize,ySize-maxsize,maxsize);
         //Points=pointGenerator.getPointsList();
         Polygons=polygonGenerator.getPolygons();
         //Obstacles.addAll(Points);
+
+        //TODO here we need to implement GJK algorithm https://www.youtube.com/watch?v=Qupqu1xe7Io for collision detection of convex hulls. Compare it to teh set of Obstacles and if no collision detected then add to set
+        //A very good reference is http://www.cs.sjsu.edu/faculty/pollett/masters/Semesters/Spring12/josh/GJK.html
+
         Obstacles.addAll(Polygons);
     }
 

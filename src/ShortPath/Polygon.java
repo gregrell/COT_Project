@@ -17,7 +17,7 @@ public class Polygon extends Obstacle {
         points = new ArrayList<Point>();
         root=new Point(0,0);
         rnd=new Random();
-        int numPoints = (int)(rnd.nextFloat()*(MaxPoints-3)+3);
+        int numPoints = (int)(rnd.nextFloat()*(MaxPoints-4)+4);
 
         for(int i=0;i<numPoints;i++){
             Point p = new Point(rnd.nextInt(MaxWidth),rnd.nextInt(MaxHeight));
