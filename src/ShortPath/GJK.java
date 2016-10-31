@@ -13,10 +13,6 @@ import java.util.List;
 
 public class GJK {
 
-
-
-
-
     public Point Support(Polygon polygon, Point direction){
         Point closestPoint=polygon.getHull().get(0);
         double maxDotProduct=dotProduct(polygon.getHull().get(0),direction);
@@ -63,8 +59,23 @@ public class GJK {
 
         System.out.println(Simplex.toString());
         return retVal;
+    }
+
+    public boolean doSimplex(List<Point> Simplex, Point direction){
+        boolean foundOrigin=false;
+        Point origin = new Point(0,0);
+        boolean containsOrigin=Simplex.contains(origin);
+        if(Simplex.size()==2){ //two point simplex case
+
+        }
+        else if(Simplex.size()>=3){ //three point simplex case
+
+        }
 
 
+
+
+        return foundOrigin||containsOrigin;
     }
 
 
