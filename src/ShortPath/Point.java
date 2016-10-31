@@ -39,6 +39,10 @@ class Point {
         this.y = y;
     }
 
+    public Point inverse(){
+        return new Point (-x,-y);
+    }
+
     @Override
     public String toString() {
         return "Point{" +

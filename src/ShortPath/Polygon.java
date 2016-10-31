@@ -30,7 +30,13 @@ public class Polygon extends Obstacle {
     }
 
     public List<Point> getHull() {
-        return Hull;
+        List<Point> tempHull=new ArrayList<Point>();
+        for(Point P:Hull){
+            P.setX(P.getX()+root.getX());
+            P.setY(P.getY()+root.getY());
+            tempHull.add(P);
+        }
+        return tempHull;
     }
 
     public Point getRoot() {

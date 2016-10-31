@@ -22,7 +22,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
     private static final int viewHeight = 1050;
     private static final int gridsize = 8000;
     private static final int numObstacles = 100;
-    public static final int MaxObstacleSize=500;
+    public static final int MaxObstacleSize=gridsize/10;
     private static final Color gridColor = Color.DARKBLUE;
     private static final Color fontColor = Color.WHITE;
     private static final String windowTitle = "Obstacle Ground";
@@ -138,22 +138,29 @@ public class Main extends Application implements EventHandler<ActionEvent>{
         else if(event.getSource()==TempTest) {
             clearCanvas();
             //TODO remove this
-            System.out.println("Temporary Test Button");
             Polygon poly = new Polygon(100,100,10);
+            Polygon poly2 = new Polygon(100,100,10);
+            poly2.setRoot(new Point(600,400));
 
 
-            gc.setFill(Color.GREEN);
-            for(Point p:poly.getPoints()) {
-                gc.fillRect(p.x, p.y, 2, 2);
-            }
-
-            gc.setFill(Color.RED);
-            for(Point p:poly.getHull()) {
-                gc.fillRect(p.x, p.y, 2, 2);
-            }
 
             gc.strokePolygon(poly.getHullXpointsAsDouble(),poly.getHullYpointsAsDouble(),poly.getHull().size());
+            gc.strokePolygon(poly2.getHullXpointsAsDouble(),poly2.getHullYpointsAsDouble(),poly2.getHull().size());
+            GJK myGJK=new GJK();
+            Point direction = new Point(10,400);
+            Point support=myGJK.Support(poly,direction);
+            Point support2=myGJK.Support(poly2, direction.inverse());
 
+            System.out.println(support2.toString());
+
+            gc.strokeLine(0,0,direction.getX(),direction.getY());
+            gc.setFill(Color.RED);
+
+            gc.fillRect(support.getX()-2,support.getY()-2,5,5);
+
+
+            gc.setFill(Color.VIOLET);
+            gc.fillRect(support2.getX()-2,support2.getY()-2,5,5);
 
 
 
