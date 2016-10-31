@@ -140,28 +140,29 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             //TODO remove this
             Polygon poly = new Polygon(100,100,10);
             Polygon poly2 = new Polygon(100,100,10);
-            poly2.setRoot(new Point(600,400));
+            poly2.setRoot(new Point(0,0));
 
 
 
             gc.strokePolygon(poly.getHullXpointsAsDouble(),poly.getHullYpointsAsDouble(),poly.getHull().size());
             gc.strokePolygon(poly2.getHullXpointsAsDouble(),poly2.getHullYpointsAsDouble(),poly2.getHull().size());
+
             GJK myGJK=new GJK();
-            Point direction = new Point(10,400);
+            Point direction = new Point(1000,1000);
+
             Point support=myGJK.Support(poly,direction);
             Point support2=myGJK.Support(poly2, direction.inverse());
 
-            System.out.println(support2.toString());
 
             gc.strokeLine(0,0,direction.getX(),direction.getY());
             gc.setFill(Color.RED);
 
             gc.fillRect(support.getX()-2,support.getY()-2,5,5);
 
-
             gc.setFill(Color.VIOLET);
             gc.fillRect(support2.getX()-2,support2.getY()-2,5,5);
 
+            System.out.println(myGJK.GJKCollision(poly,poly2));
 
 
         }

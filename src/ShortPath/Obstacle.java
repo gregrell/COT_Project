@@ -4,7 +4,7 @@ package ShortPath;
  * Created by gregrell on 10/28/16.
  */
 public class Obstacle {
-    Point root;
+    Point root=new Point(0,0);
 
     public Point getRoot() {
         return root;

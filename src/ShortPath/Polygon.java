@@ -15,7 +15,7 @@ public class Polygon extends Obstacle {
 
     public Polygon(int MaxWidth, int MaxHeight, int MaxPoints){
         points = new ArrayList<Point>();
-        root=new Point(0,0);
+
         rnd=new Random();
         int numPoints = (int)(rnd.nextFloat()*(MaxPoints-4)+4);
 
@@ -29,23 +29,16 @@ public class Polygon extends Obstacle {
 
     }
 
-    public List<Point> getHull() {
+    public List<Point> getHull(){
         List<Point> tempHull=new ArrayList<Point>();
+        tempHull.clear();
         for(Point P:Hull){
-            P.setX(P.getX()+root.getX());
-            P.setY(P.getY()+root.getY());
-            tempHull.add(P);
+            Point newPoint = new Point(P.getX()+root.getX(),P.getY()+root.getY());
+            tempHull.add(newPoint);
         }
         return tempHull;
     }
 
-    public Point getRoot() {
-        return root;
-    }
-
-    public void setRoot(Point root) {
-        this.root = root;
-    }
 
     public List<Point> getPoints() {
         return points;
