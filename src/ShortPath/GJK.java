@@ -9,6 +9,7 @@ import java.util.List;
  * Ref: http://www.cs.sjsu.edu/faculty/pollett/masters/Semesters/Spring12/josh/GJK.html
  * Ref: https://mollyrocket.com/849
  * Ref: https://en.wikipedia.org/wiki/Gilbert%E2%80%93Johnson%E2%80%93Keerthi_distance_algorithm
+ * Ref: http://www.dyn4j.org/2010/04/gjk-gilbert-johnson-keerthi/#gjk-simplex
  */
 
 public class GJK {
@@ -52,8 +53,12 @@ public class GJK {
             }
             else {
                 Simplex.add(VectorA);
-                retVal=true;
-                break;
+                if(doSimplex(Simplex,VectorD)) {
+                    retVal = true;
+                    break;
+                }
+
+
             }
         }
 
@@ -61,22 +66,31 @@ public class GJK {
         return retVal;
     }
 
-    public boolean doSimplex(List<Point> Simplex, Point direction){
-        boolean foundOrigin=false;
-        Point origin = new Point(0,0);
-        boolean containsOrigin=Simplex.contains(origin);
-        if(Simplex.size()==2){ //two point simplex case
-
+    public boolean doSimplex(List<Point> Simplex, Point direction) {
+        boolean foundOrigin = false;
+        Point origin = new Point(0, 0);
+        boolean containsOrigin = Simplex.contains(origin);
+        if (Simplex.size() == 2) { //two point simplex case
+            Point simplexLine = new Point(Simplex.get(0).getX() - Simplex.get(1).getX(), Simplex.get(0).getY() - Simplex.get(1).getY());
+            Point newpointToOrigin = new Point(0 - (Simplex.get(1).getX()), 0 - (Simplex.get(1).getY()));
+            double dotProductResult = dotProduct(simplexLine, newpointToOrigin);
+            if (dotProductResult > 0) {
+                direction= newpointToOrigin;
+                //positive therefore region 1
+            } else {
+                //region2
+            }
         }
-        else if(Simplex.size()>=3){ //three point simplex case
 
-        }
-
+        else if (Simplex.size() >= 3) { //three point simplex case
 
 
-
+            }
         return foundOrigin||containsOrigin;
-    }
+
+
+        }
+
 
 
 }
