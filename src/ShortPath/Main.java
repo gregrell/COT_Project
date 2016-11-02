@@ -140,7 +140,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             //TODO remove this
             Polygon poly = new Polygon(100,100,10);
             Polygon poly2 = new Polygon(100,100,10);
-            poly2.setRoot(new Point(0,0));
+            poly2.setRoot(new Point(0,20));
 
 
 
@@ -164,7 +164,29 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
             System.out.println(myGJK.GJKCollision(poly,poly2));
 
-            System.out.println(myGJK.isInTriangle(new Point(1,1),new Point(12,10), new Point(-13,10), new Point(0,-5)));
+
+
+
+            /*
+            Point a=new Point(112,10);
+            Point b=new Point(185,10);
+            Point c=new Point(112,200);
+
+            Point tp=new Point(133,150);
+
+            System.out.println(myGJK.isInTriangle(tp,a,b,c));
+            /*gc.fillRect(a.x,a.y,5,5);
+            gc.fillRect(b.x,b.y,5,5);
+            gc.fillRect(c.x,c.y,5,5);
+
+            gc.strokeLine(a.x,a.y,b.x,b.y);
+            gc.strokeLine(b.x,b.y,c.x,c.y);
+            gc.strokeLine(c.x,c.y,a.x,a.y);
+
+
+            gc.setFill(Color.CORAL);
+            gc.fillRect(tp.x,tp.y,4,4);
+            */
 
 
         }

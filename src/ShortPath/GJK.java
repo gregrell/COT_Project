@@ -50,9 +50,10 @@ public class GJK {
         List<Point> Simplex = new ArrayList<Point>();
         Simplex.add(VectorA);
         Point VectorD = VectorA.inverse();
-        while(Simplex.size()<4){
+        int i=0;
+        while(i<5){
             VectorA=pointSubtraction(Support(poly1,VectorD),Support(poly2,VectorD));
-            if(dotProduct(VectorA,VectorD)<0){
+            if(dotProduct(VectorD,VectorA)<0){
                 break;
             }
             else {
@@ -62,10 +63,10 @@ public class GJK {
                     break;
                 }
 
-
+                retVal = true;
             }
+            i++;
         }
-
         System.out.println(Simplex.toString());
         return retVal;
     }
@@ -87,6 +88,11 @@ public class GJK {
         }
 
         else if (Simplex.size() >= 3) { //three point simplex case
+            if(isInTriangle(new Point(0,0),Simplex.get(0),Simplex.get(1),Simplex.get(2))){
+                containsOrigin=true;
+
+            }
+
 
 
             }
@@ -94,6 +100,9 @@ public class GJK {
 
     }
 
+
+    //Determine if a given point is within the bounds of a triangle represented by three points. This is done using cross product and determination of point location
+    //on right or left side of the divisor line
     public boolean isInTriangle(Point P, Point A, Point B, Point C) {
         Point VectorAB = pointSubtraction(B, A);
         Point VectorBC = pointSubtraction(C, B);
@@ -107,18 +116,16 @@ public class GJK {
         boolean rightAB = false;
         boolean rightBC = false;
         boolean rightCA = false;
-        if (crossProduct(VectorAB,VectorAP) > 0) {
+        if (crossProduct(VectorAP,VectorAB) > 0) {
             rightAB = true;
         }
-        if (dotProduct(P, VectorBC) > 0) {
+        if (crossProduct(VectorBP,VectorBC) > 0) {
             rightBC = true;
         }
-        if (dotProduct(P, VectorCA) > 0) {
+        if (crossProduct(VectorCP,VectorCA) > 0) {
             rightCA = true;
         }
 
-        System.out.println(crossProduct(VectorAB,P)+"<- result of cross product to AB");
-        //System.out.println(rightAB+"<-result of right AB "+rightBC+"<- result of right BC "+rightCA+"<- result of right CA");
 
         return rightAB && rightBC && rightCA;
     }
