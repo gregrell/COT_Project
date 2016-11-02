@@ -164,6 +164,8 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
             System.out.println(myGJK.GJKCollision(poly,poly2));
 
+            System.out.println(myGJK.isInTriangle(new Point(1,1),new Point(12,10), new Point(-13,10), new Point(0,-5)));
+
 
         }
 

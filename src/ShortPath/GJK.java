@@ -33,6 +33,10 @@ public class GJK {
 
     }
 
+    public double crossProduct(Point A, Point B){
+        return(A.getX()*B.getY()-A.getY()*B.getX());
+    }
+
     public Point pointSubtraction(Point A, Point B){
         return new Point(A.getX()-B.getX(),A.getY()-B.getY());
     }
@@ -88,8 +92,36 @@ public class GJK {
             }
         return foundOrigin||containsOrigin;
 
+    }
 
+    public boolean isInTriangle(Point P, Point A, Point B, Point C) {
+        Point VectorAB = pointSubtraction(B, A);
+        Point VectorBC = pointSubtraction(C, B);
+        Point VectorCA = pointSubtraction(A, C);
+
+        Point VectorAP = pointSubtraction(A,P);
+        Point VectorBP = pointSubtraction(B,P);
+        Point VectorCP = pointSubtraction(C,P);
+
+
+        boolean rightAB = false;
+        boolean rightBC = false;
+        boolean rightCA = false;
+        if (crossProduct(VectorAB,VectorAP) > 0) {
+            rightAB = true;
         }
+        if (dotProduct(P, VectorBC) > 0) {
+            rightBC = true;
+        }
+        if (dotProduct(P, VectorCA) > 0) {
+            rightCA = true;
+        }
+
+        System.out.println(crossProduct(VectorAB,P)+"<- result of cross product to AB");
+        //System.out.println(rightAB+"<-result of right AB "+rightBC+"<- result of right BC "+rightCA+"<- result of right CA");
+
+        return rightAB && rightBC && rightCA;
+    }
 
 
 
