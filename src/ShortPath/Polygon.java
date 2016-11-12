@@ -8,6 +8,7 @@ import java.util.*;
 public class Polygon extends Obstacle {
     List<Point> points;
     List<Point> Hull;
+    List<Edge>  Edges = new ArrayList<Edge>();
     QuickHull qh;
     Random rnd;
 
@@ -26,6 +27,7 @@ public class Polygon extends Obstacle {
 
         qh=new QuickHull(points);
         Hull=qh.getHull();
+        setEdges(Hull);
 
     }
 
@@ -42,6 +44,17 @@ public class Polygon extends Obstacle {
 
     public List<Point> getPoints() {
         return points;
+    }
+
+    private void setEdges(List<Point> inHull){
+        for(int i=0;i<inHull.size()-1;i++){
+            Edges.add(new Edge(inHull.get(i),inHull.get(i+1)));
+        }
+        Edges.add(new Edge(inHull.get(inHull.size()-1),inHull.get(0)));
+    }
+
+    public List<Edge> getEdges() {
+        return Edges;
     }
 
     public int[] getXpoints(){

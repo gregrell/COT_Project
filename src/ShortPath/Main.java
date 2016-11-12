@@ -1,5 +1,6 @@
 package ShortPath;
 
+import VVComplex.VisibilityGraph;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,14 +27,17 @@ public class Main extends Application implements EventHandler<ActionEvent>{
     private static final Color gridColor = Color.DARKBLUE;
     private static final Color fontColor = Color.WHITE;
     private static final String windowTitle = "Obstacle Ground";
-    private static final String tempTxt ="ConvexHullTest";
+    private static final String tempTxt ="GJK Testing";
+    private static final String tempTxt2 ="VisibilityGraph";
 
     private final Button GeneratePolygons = new Button();
     private final Button ShortestPath = new Button();
     private final Button TempTest = new Button();
+    private final Button TempTest2 = new Button();
     private final Canvas drawingarea = new Canvas();
     private final GraphicsContext gc = drawingarea.getGraphicsContext2D();
     private ObstacleRange range;
+    private VisibilityGraph vg;
 
 
     @Override
@@ -53,15 +57,18 @@ public class Main extends Application implements EventHandler<ActionEvent>{
         HBoxPane.getChildren().add(GeneratePolygons);
         HBoxPane.getChildren().add(ShortestPath);
         HBoxPane.getChildren().add(TempTest);
+        HBoxPane.getChildren().add(TempTest2);
 
         HBoxPane.setStyle("-fx-background-color: #336699;");
         GeneratePolygons.setText("Generate Obstacles");
         ShortestPath.setText("Get Shortest Path");
         TempTest.setText(tempTxt);
+        TempTest2.setText(tempTxt2);
 
         GeneratePolygons.setOnAction(this);
         ShortestPath.setOnAction(this);
         TempTest.setOnAction(this);
+        TempTest2.setOnAction(this);
 
         Border_Pane.setTop(HBoxPane);
         Border_Pane.setCenter(drawingarea);
@@ -135,6 +142,11 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             //TODO remove this
             System.out.println("Need to calculate shortest path");
         }
+
+
+
+
+
         else if(event.getSource()==TempTest) {
             clearCanvas();
             //TODO remove this
@@ -165,29 +177,17 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             System.out.println(myGJK.GJKCollision(poly,poly2));
 
 
+        }
 
 
-            /*
-            Point a=new Point(112,10);
-            Point b=new Point(185,10);
-            Point c=new Point(112,200);
-
-            Point tp=new Point(133,150);
-
-            System.out.println(myGJK.isInTriangle(tp,a,b,c));
-            /*gc.fillRect(a.x,a.y,5,5);
-            gc.fillRect(b.x,b.y,5,5);
-            gc.fillRect(c.x,c.y,5,5);
-
-            gc.strokeLine(a.x,a.y,b.x,b.y);
-            gc.strokeLine(b.x,b.y,c.x,c.y);
-            gc.strokeLine(c.x,c.y,a.x,a.y);
 
 
-            gc.setFill(Color.CORAL);
-            gc.fillRect(tp.x,tp.y,4,4);
-            */
 
+        else if(event.getSource()==TempTest2) {
+            //TODO remove this
+            vg=new VisibilityGraph();
+            vg.addObstacles(range.getObstacles());
+            drawEdges(vg.getGraph().getEdges());
 
         }
 
@@ -202,6 +202,13 @@ public class Main extends Application implements EventHandler<ActionEvent>{
     private void colorCanvas(){
         gc.setFill(gridColor);
         gc.fillRect(0,0,gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+    }
+
+    public void drawEdges(List<Edge> edge){
+        gc.setStroke(Color.RED);
+        for(Edge e:edge){
+            gc.strokeLine(e.p1.x,e.p1.y,e.p2.x,e.p2.y);
+        }
     }
 
 
