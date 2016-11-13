@@ -3,7 +3,11 @@ package VVComplex;
 import ShortPath.Graph;
 import ShortPath.Obstacle;
 import ShortPath.Polygon;
+import ShortPath.VectorAlgebra;
 
+import ShortPath.Point;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -78,4 +82,30 @@ public class VisibilityGraph {
     public Graph getGraph() {
         return G;
     }
+
+
+
+    public void VisibleVertices(Point p, List<Obstacle> O){
+        List<Point> V = new ArrayList<Point>();
+        for(Obstacle o:O){
+            o=(Polygon)o;
+            for(Point q:((Polygon) o).getHull()){
+                V.add(q);
+            }
+
+
+        }
+        //find angle between point p to all vertices in O and p to x->oo
+        //find the distance between p and all vertices in O in case of a tie
+        //sort a list based on increasing clockwise angle
+        System.out.println(VectorAlgebra.findAngle(p,V.get(0)));
+
+    }
+
+
+
+
+
+
+
 }

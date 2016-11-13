@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by gregrell on 10/21/16.
  */
-class Point implements Serializable{
+public class Point implements Serializable{
     int x;
     int y;
     @SuppressWarnings("unused")

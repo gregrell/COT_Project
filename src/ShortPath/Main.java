@@ -210,6 +210,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             vg=new VisibilityGraph();
             vg.addObstacles(range.getObstacles());
             drawEdges(vg.getGraph().getEdges());
+            vg.VisibleVertices(new Point(100,100),range.getObstacles());
 
         }
 
