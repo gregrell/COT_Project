@@ -1,9 +1,11 @@
 package ShortPath;
 
+import java.io.Serializable;
+
 /**
  * Created by gregrell on 10/28/16.
  */
-public class Obstacle {
+public class Obstacle implements Serializable{
     Point root=new Point(0,0);
 
     public Point getRoot() {

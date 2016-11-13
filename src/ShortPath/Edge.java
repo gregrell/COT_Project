@@ -1,9 +1,11 @@
 package ShortPath;
 
+import java.io.Serializable;
+
 /**
  * Created by Greg on 11/12/2016.
  */
-public class Edge {
+public class Edge implements Serializable{
     public Point p1 = new Point(-1,-1);
     public Point p2 = new Point(-1,-1);
 

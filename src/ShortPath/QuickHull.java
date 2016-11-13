@@ -1,5 +1,6 @@
 package ShortPath;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.List;
  *
  *
  */
-public class QuickHull {
+public class QuickHull implements Serializable{
     public static List<Point> Hull;
 
     //Constructor

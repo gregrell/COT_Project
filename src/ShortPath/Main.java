@@ -1,5 +1,6 @@
 package ShortPath;
 
+import COT5405.COTIOStream;
 import VVComplex.VisibilityGraph;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -29,15 +30,28 @@ public class Main extends Application implements EventHandler<ActionEvent>{
     private static final String windowTitle = "Obstacle Ground";
     private static final String tempTxt ="GJK Testing";
     private static final String tempTxt2 ="VisibilityGraph";
+    private static final String saveButtonText ="Save Obstacles";
+    private static final String loadButtonText ="Load Obstacles";
+
 
     private final Button GeneratePolygons = new Button();
     private final Button ShortestPath = new Button();
-    private final Button TempTest = new Button();
+    private final Button GJK = new Button();
     private final Button TempTest2 = new Button();
+    private final Button SaveButton = new Button();
+    private final Button LoadButton = new Button();
     private final Canvas drawingarea = new Canvas();
     private final GraphicsContext gc = drawingarea.getGraphicsContext2D();
     private ObstacleRange range;
     private VisibilityGraph vg;
+    private List<Obstacle> O;
+
+
+
+    private Double doubleXbound;
+    private Double doubleYbound;
+    private Double xratio;
+    private Double yratio;
 
 
     @Override
@@ -56,19 +70,25 @@ public class Main extends Application implements EventHandler<ActionEvent>{
         HBoxPane.setPadding(new Insets(5,15,5,15));
         HBoxPane.getChildren().add(GeneratePolygons);
         HBoxPane.getChildren().add(ShortestPath);
-        HBoxPane.getChildren().add(TempTest);
+        HBoxPane.getChildren().add(GJK);
         HBoxPane.getChildren().add(TempTest2);
+        HBoxPane.getChildren().add(SaveButton);
+        HBoxPane.getChildren().add(LoadButton);
 
         HBoxPane.setStyle("-fx-background-color: #336699;");
         GeneratePolygons.setText("Generate Obstacles");
         ShortestPath.setText("Get Shortest Path");
-        TempTest.setText(tempTxt);
+        GJK.setText(tempTxt);
         TempTest2.setText(tempTxt2);
+        SaveButton.setText(saveButtonText);
+        LoadButton.setText(loadButtonText);
 
         GeneratePolygons.setOnAction(this);
         ShortestPath.setOnAction(this);
-        TempTest.setOnAction(this);
+        GJK.setOnAction(this);
         TempTest2.setOnAction(this);
+        SaveButton.setOnAction(this);
+        LoadButton.setOnAction(this);
 
         Border_Pane.setTop(HBoxPane);
         Border_Pane.setCenter(drawingarea);
@@ -79,6 +99,19 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
         //generate obstacle field
         gc.setFill(Color.RED);
+
+
+        doubleXbound = gc.getCanvas().getWidth();
+        doubleYbound = gc.getCanvas().getHeight();
+        xratio = doubleXbound / gridsize;
+        yratio = doubleYbound / gridsize;
+
+        if (!ObstacleRange.exists) {
+            range = new ObstacleRange(gridsize, gridsize, numObstacles);
+        } else {
+            range.Create();
+        }
+
 
 
         Scene theScene = new Scene(Border_Pane,viewWidth,viewHeight);
@@ -95,20 +128,14 @@ public class Main extends Application implements EventHandler<ActionEvent>{
         /*START OF OBSTACLE GENERATOR EVENTS HANDLER*/
         if (event.getSource()==GeneratePolygons) {
             clearCanvas();
-            Double doubleXbound = gc.getCanvas().getWidth();
-            Double doubleYbound = gc.getCanvas().getHeight();
-            Double xratio = doubleXbound / gridsize;
-            Double yratio = doubleYbound / gridsize;
-
-
-
-            gc.setFill(Color.RED);
+            gc.setStroke(Color.WHITE);
 
             if (!ObstacleRange.exists) {
                 range = new ObstacleRange(gridsize, gridsize, numObstacles);
             } else {
                 range.Create();
             }
+
 
             // set text at top of obstacle screen view
             gc.strokeText(range.toString(), 5, 15);
@@ -147,14 +174,11 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
 
 
-        else if(event.getSource()==TempTest) {
+        else if(event.getSource()== GJK) {
             clearCanvas();
             //TODO remove this
-            Polygon poly = new Polygon(100,100,10);
-            Polygon poly2 = new Polygon(100,100,10);
-            poly2.setRoot(new Point(0,20));
-
-
+            Polygon poly = new Polygon(0,20,100,100,10);
+            Polygon poly2 = new Polygon(0,20,100,100,10);
 
             gc.strokePolygon(poly.getHullXpointsAsDouble(),poly.getHullYpointsAsDouble(),poly.getHull().size());
             gc.strokePolygon(poly2.getHullXpointsAsDouble(),poly2.getHullYpointsAsDouble(),poly2.getHull().size());
@@ -175,8 +199,6 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             gc.fillRect(support2.getX()-2,support2.getY()-2,5,5);
 
             System.out.println(myGJK.GJKCollision(poly,poly2));
-
-
         }
 
 
@@ -190,6 +212,25 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             drawEdges(vg.getGraph().getEdges());
 
         }
+
+        else if(event.getSource()==SaveButton) {
+            COTIOStream fileHandler = new COTIOStream();
+            List<Obstacle> obslist = range.getObstacles();
+            fileHandler.saveObstacles(obslist);
+            //TODO remove this
+        }
+
+        else if(event.getSource()==LoadButton) {
+            //TODO remove this
+            COTIOStream fileHandler = new COTIOStream();
+            List<Obstacle> inObstacles = fileHandler.loadObstacles();
+            range.setObstacles(inObstacles);
+
+        }
+
+
+
+
 
     }
 
@@ -207,7 +248,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
     public void drawEdges(List<Edge> edge){
         gc.setStroke(Color.RED);
         for(Edge e:edge){
-            gc.strokeLine(e.p1.x,e.p1.y,e.p2.x,e.p2.y);
+            gc.strokeLine(e.p1.x * (xratio),e.p1.y * (yratio),e.p2.x *(xratio),e.p2.y *(yratio));
         }
     }
 

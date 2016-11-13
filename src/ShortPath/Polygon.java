@@ -14,14 +14,17 @@ public class Polygon extends Obstacle {
 
     /*Constructor - generate as many points as fed into the contstructor for the polygon, then sort them in order to generate convex hull*/
 
-    public Polygon(int MaxWidth, int MaxHeight, int MaxPoints){
+    public Polygon(int rootx, int rooty, int MaxWidth, int MaxHeight, int MaxPoints){
         points = new ArrayList<Point>();
 
         rnd=new Random();
         int numPoints = (int)(rnd.nextFloat()*(MaxPoints-4)+4);
 
+        this.root.setX(rootx);
+        this.root.setY(rooty);
+
         for(int i=0;i<numPoints;i++){
-            Point p = new Point(rnd.nextInt(MaxWidth),rnd.nextInt(MaxHeight));
+            Point p = new Point(rnd.nextInt(MaxWidth)+rootx,rnd.nextInt(MaxHeight)+rooty);
             points.add(p);
         }
 
@@ -35,7 +38,7 @@ public class Polygon extends Obstacle {
         List<Point> tempHull=new ArrayList<Point>();
         tempHull.clear();
         for(Point P:Hull){
-            Point newPoint = new Point(P.getX()+root.getX(),P.getY()+root.getY());
+            Point newPoint = new Point(P.getX(),P.getY());
             tempHull.add(newPoint);
         }
         return tempHull;
@@ -86,7 +89,7 @@ public class Polygon extends Obstacle {
         double[] xPointsDbl = new double[points.size()];
 
         for(Point p:points){
-            xPointsDbl[i]= ((double) p.x) + root.x;
+            xPointsDbl[i]= ((double) p.x);
 
             i++;
         }
@@ -98,7 +101,7 @@ public class Polygon extends Obstacle {
         double[] yPointsDbl = new double[points.size()];
 
         for(Point p:points){
-            yPointsDbl[i]= ((double) p.y) + root.y;
+            yPointsDbl[i]= ((double) p.y);
 
             i++;
         }
@@ -111,7 +114,7 @@ public class Polygon extends Obstacle {
         double[] HullxPointsDbl = new double[Hull.size()];
 
         for(Point p:Hull){
-            HullxPointsDbl[i]= ((double) p.x) + root.x;
+            HullxPointsDbl[i]= ((double) p.x);
 
             i++;
         }
@@ -123,18 +126,11 @@ public class Polygon extends Obstacle {
         double[] HullyPointsDbl = new double[Hull.size()];
 
         for(Point p:Hull){
-            HullyPointsDbl[i]= ((double) p.y) + root.y;
+            HullyPointsDbl[i]= ((double) p.y);
 
             i++;
         }
         return HullyPointsDbl;
     }
-
-
-
-
-
-
-
 
 }
