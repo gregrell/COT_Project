@@ -56,4 +56,33 @@ public class VectorAlgebra {
     }
 
 
+
+    public static boolean intersection(Edge e1, Edge e2){
+        double A1B2 = e1.getABC().A*e2.getABC().B;
+        double A2B1 = e2.getABC().A*e1.getABC().B;
+        boolean retVal=false;
+        if(A1B2!=A2B1){
+            retVal=true;
+        }
+
+        return retVal;
+    }
+
+    public static Point intersectionPt(Edge e1, Edge e2){
+        ABCform l1 = e1.getABC();
+        ABCform l2 = e2.getABC();
+
+        /*
+        y = (c1a2- c2a1)/(a1b2-a2b1)
+
+        x = -1/a1 - b1y/a1
+        */
+
+        double Y = (l1.C*l2.A)/(l1.A*l2.B-l2.A*l2.B);
+        double X = (-1/l1.A)-(l1.B*Y/l1.A);
+
+        return new Point((int)X,(int)Y);
+
+    }
+
 }

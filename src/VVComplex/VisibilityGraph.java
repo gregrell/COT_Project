@@ -89,7 +89,7 @@ public class VisibilityGraph {
     public List<Edge> VisibleVertices(Point p, List<Obstacle> O){
         angles.clear();
         V = new ArrayList<Point>();
-        List<Edge> radialEdges = new ArrayList<Edge>();
+        List<Edge> radialLines = new ArrayList<Edge>();
         for(Obstacle o:O){
             o=(Polygon)o;
             for(Point q:((Polygon) o).getHull()){
@@ -97,24 +97,25 @@ public class VisibilityGraph {
                 sortedV.add(new PointAngleWrapper(q,VectorAlgebra.findAngle(p,q)));
             }
 
+
         }
 
         Collections.sort(sortedV);
-        //find angle between point p to all vertices in O and p to x->oo
-        //find the distance between p and all vertices in O in case of a tie
-        //sort a list based on increasing clockwise angle
 
-
-        for(Point q:V){
-            radialEdges.add(new Edge(p,q));
+        for(Point q:V){//TODO this can be removed
+            radialLines.add(new Edge(p,q));
             angles.add(VectorAlgebra.findAngle(p,q));
         }
 
-        for(PointAngleWrapper paw:sortedV){
-            System.out.println(paw.toString());
-        }
+        Obstacle somePoly = O.get(1);
+        List<Edge> someEdges=((Polygon)somePoly).getEdges();
+        Edge someEdge = someEdges.get(0);
+        Edge pline = new Edge(p,someEdge.getP1());
 
-        return radialEdges;
+        System.out.println(VectorAlgebra.intersection(someEdge,pline));
+        System.out.println(VectorAlgebra.intersectionPt(someEdge,pline).toString());
+
+        return radialLines;//TODO this also can be removed
     }
 
     public List<Double> getAngles() {
