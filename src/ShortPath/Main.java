@@ -213,7 +213,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             gc.setStroke(Color.RED);
 
             drawEdges(vg.getGraph().getEdges());
-            List<Edge> radialEdges = vg.VisibleVertices(new Point(400,800),range.getObstacles());
+            List<Edge> radialEdges = vg.VisibleVertices(new Point(720,370),range.getObstacles());
             List<Double> angles = new ArrayList<Double>();
             angles=vg.getAngles();
 
