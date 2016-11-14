@@ -1,14 +1,11 @@
 package VVComplex;
 
-import ShortPath.Graph;
-import ShortPath.Obstacle;
-import ShortPath.Polygon;
-import ShortPath.VectorAlgebra;
+import ShortPath.*;
 
-import ShortPath.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 
 /**
  * Created by Greg on 11/12/2016.
@@ -64,6 +61,8 @@ import java.util.List;
 
 public class VisibilityGraph {
     private Graph G;
+    List<Double> angles = new ArrayList<Double>();
+    List<Point> V;
 
     public VisibilityGraph(){
         G = new Graph();
@@ -85,27 +84,35 @@ public class VisibilityGraph {
 
 
 
-    public void VisibleVertices(Point p, List<Obstacle> O){
-        List<Point> V = new ArrayList<Point>();
+    public List<Edge> VisibleVertices(Point p, List<Obstacle> O){
+        angles.clear();
+        V = new ArrayList<Point>();
+        List<Edge> radialEdges = new ArrayList<Edge>();
         for(Obstacle o:O){
             o=(Polygon)o;
             for(Point q:((Polygon) o).getHull()){
                 V.add(q);
             }
 
-
         }
         //find angle between point p to all vertices in O and p to x->oo
         //find the distance between p and all vertices in O in case of a tie
         //sort a list based on increasing clockwise angle
-        System.out.println(VectorAlgebra.findAngle(p,V.get(0)));
 
+
+        for(Point q:V){
+            radialEdges.add(new Edge(p,q));
+            angles.add(VectorAlgebra.findAngle(p,q));
+        }
+
+        return radialEdges;
     }
 
+    public List<Double> getAngles() {
+        return angles;
+    }
 
-
-
-
-
-
+    public List<Point> getV() {
+        return V;
+    }
 }

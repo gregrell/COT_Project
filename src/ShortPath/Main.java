@@ -16,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends Application implements EventHandler<ActionEvent>{
@@ -209,8 +210,23 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             //TODO remove this
             vg=new VisibilityGraph();
             vg.addObstacles(range.getObstacles());
+            gc.setStroke(Color.RED);
+
             drawEdges(vg.getGraph().getEdges());
-            vg.VisibleVertices(new Point(100,100),range.getObstacles());
+            List<Edge> radialEdges = vg.VisibleVertices(new Point(400,800),range.getObstacles());
+            List<Double> angles = new ArrayList<Double>();
+            angles=vg.getAngles();
+
+            gc.setFill(Color.CYAN);
+
+            int i=0;
+            for(Point pt:vg.getV()){
+                gc.fillText(angles.get(i).toString(),pt.getX()*xratio,pt.getY()*yratio);
+                i++;
+            }
+            gc.setStroke(Color.WHITE);
+            drawEdges(radialEdges);
+
 
         }
 
@@ -247,7 +263,6 @@ public class Main extends Application implements EventHandler<ActionEvent>{
     }
 
     public void drawEdges(List<Edge> edge){
-        gc.setStroke(Color.RED);
         for(Edge e:edge){
             gc.strokeLine(e.p1.x * (xratio),e.p1.y * (yratio),e.p2.x *(xratio),e.p2.y *(yratio));
         }
