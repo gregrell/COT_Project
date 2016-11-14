@@ -4,6 +4,7 @@ import ShortPath.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -63,6 +64,7 @@ public class VisibilityGraph {
     private Graph G;
     List<Double> angles = new ArrayList<Double>();
     List<Point> V;
+    List<PointAngleWrapper> sortedV = new ArrayList<PointAngleWrapper>();
 
     public VisibilityGraph(){
         G = new Graph();
@@ -92,9 +94,12 @@ public class VisibilityGraph {
             o=(Polygon)o;
             for(Point q:((Polygon) o).getHull()){
                 V.add(q);
+                sortedV.add(new PointAngleWrapper(q,VectorAlgebra.findAngle(p,q)));
             }
 
         }
+
+        Collections.sort(sortedV);
         //find angle between point p to all vertices in O and p to x->oo
         //find the distance between p and all vertices in O in case of a tie
         //sort a list based on increasing clockwise angle
@@ -103,6 +108,10 @@ public class VisibilityGraph {
         for(Point q:V){
             radialEdges.add(new Edge(p,q));
             angles.add(VectorAlgebra.findAngle(p,q));
+        }
+
+        for(PointAngleWrapper paw:sortedV){
+            System.out.println(paw.toString());
         }
 
         return radialEdges;
