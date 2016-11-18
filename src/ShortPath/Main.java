@@ -210,7 +210,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             //TODO remove this
             vg=new VisibilityGraph();
             vg.addObstacles(range.getObstacles());
-            gc.setStroke(Color.RED);
+            gc.setStroke(Color.WHITE);
 
             drawEdges(vg.getGraph().getEdges());
             List<Edge> radialEdges = vg.VisibleVertices(new Point(720,370),range.getObstacles());
@@ -224,7 +224,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
                 gc.fillText(angles.get(i).toString(),pt.getX()*xratio,pt.getY()*yratio);
                 i++;
             }
-            gc.setStroke(Color.WHITE);
+            gc.setStroke(Color.CRIMSON);
             drawEdges(radialEdges);
 
 

@@ -94,13 +94,14 @@ public class VisibilityGraph {
             o=(Polygon)o;
             for(Point q:((Polygon) o).getHull()){
                 V.add(q);
-                sortedV.add(new PointAngleWrapper(q,VectorAlgebra.findAngle(p,q)));
+                sortedV.add(new PointAngleWrapper(q,VectorAlgebra.findAngle(p,q), VectorAlgebra.distance2pts(p,q)));
             }
 
 
         }
 
         Collections.sort(sortedV);
+
 
         for(Point q:V){//TODO this can be removed
             radialLines.add(new Edge(p,q));

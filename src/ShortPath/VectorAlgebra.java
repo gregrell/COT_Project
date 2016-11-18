@@ -19,6 +19,15 @@ public class VectorAlgebra {
         return result;
     }
 
+    public static double distance2pts(Point p1, Point p2){
+        double p2minusp1X = p2.getX()-p1.getX();
+        double p2minusp1Y = p2.getY()-p1.getY();
+        double xvalSqrd = Math.pow(p2minusp1X,2);
+        double yvalSqrd = Math.pow(p2minusp1Y,2);
+        double XYadded = xvalSqrd+yvalSqrd;
+        return Math.sqrt(XYadded);
+    }
+
     public static double findAngle(Point p1, Point p2){
         Point horizVector = new Point(p1.getX()+1,0);
         Point normalVector = new Point(0,p1.getY()+1);

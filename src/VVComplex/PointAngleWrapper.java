@@ -9,9 +9,11 @@ import ShortPath.Point;
 public class PointAngleWrapper implements Comparable{
     Point p;
     Double angle;
-    public PointAngleWrapper(Point p, Double angle){
+    Double distToOrigin;
+    public PointAngleWrapper(Point p, Double angle, Double distToOrigin){
         this.p=p;
         this.angle=angle;
+        this.distToOrigin=distToOrigin;
     }
 
     public Point getP() {
@@ -20,6 +22,10 @@ public class PointAngleWrapper implements Comparable{
 
     public Double getAngle() {
         return angle;
+    }
+
+    public Double getDistToOrigin() {
+        return distToOrigin;
     }
 
     @Override
@@ -33,6 +39,12 @@ public class PointAngleWrapper implements Comparable{
 
     @Override
     public int compareTo(Object o) {
-        return this.getAngle().compareTo(((PointAngleWrapper)o).getAngle());
+        if(this.getAngle()!=((PointAngleWrapper)o).getAngle()) {
+
+            return this.getAngle().compareTo(((PointAngleWrapper) o).getAngle());
+        }
+        else{
+            return this.getDistToOrigin().compareTo(((PointAngleWrapper)o).getDistToOrigin());
+        }
     }
 }
