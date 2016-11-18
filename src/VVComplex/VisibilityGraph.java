@@ -35,8 +35,8 @@ import java.util.List;
      balanced search tree T in the order in which they are intersected by ρ.
      3. W ← /0
      4. for i ← 1 to n
-     5. do if VISIBLE(wi) then Add wi to W.
-     6. Insert into T the obstacle edges incident to wi that lie on the clockwise
+     5.  do if VISIBLE(wi) then Add wi to W.
+     6.  Insert into T the obstacle edges incident to wi that lie on the clockwise
      side of the half-line from p to wi.
      7. Delete from T the obstacle edges incident to wi that lie on the
      counterclockwise side of the half-line from p to wi.
@@ -64,6 +64,7 @@ public class VisibilityGraph {
     private Graph G;
     List<Double> angles = new ArrayList<Double>();
     List<Point> V;
+    List<Edge>  E;
     List<PointAngleWrapper> sortedV = new ArrayList<PointAngleWrapper>();
 
     public VisibilityGraph(){
@@ -88,10 +89,16 @@ public class VisibilityGraph {
 
     public List<Edge> VisibleVertices(Point p, List<Obstacle> O){
         angles.clear();
+        List<Point> W = new ArrayList<Point>();
         V = new ArrayList<Point>();
+        E = new ArrayList<Edge>();
         List<Edge> radialLines = new ArrayList<Edge>();
+
         for(Obstacle o:O){
             o=(Polygon)o;
+
+            E.addAll(((Polygon) o).getEdges()); // Get all edges for all obstacles
+
             for(Point q:((Polygon) o).getHull()){
                 V.add(q);
                 sortedV.add(new PointAngleWrapper(q,VectorAlgebra.findAngle(p,q), VectorAlgebra.distance2pts(p,q)));
@@ -101,20 +108,25 @@ public class VisibilityGraph {
         }
 
         Collections.sort(sortedV);
-
-
         for(Point q:V){//TODO this can be removed
-            radialLines.add(new Edge(p,q));
+            Edge e = new Edge(p,q);
+            radialLines.add(e);
             angles.add(VectorAlgebra.findAngle(p,q));
         }
 
-        Obstacle somePoly = O.get(1);
-        List<Edge> someEdges=((Polygon)somePoly).getEdges();
-        Edge someEdge = someEdges.get(0);
-        Edge pline = new Edge(p,someEdge.getP1());
+        for(Edge k:radialLines){
+            boolean intersect=false;
+            for(Edge j:E){
+                if(VectorAlgebra.intersects(k,j)){
+                    intersect=true;
+                }
+            }
+            if(intersect){
+                System.out.println("Intersection Detected");
+                radialLines.remove(k);
+            }
+        }
 
-        System.out.println(VectorAlgebra.intersection(someEdge,pline));
-        System.out.println(VectorAlgebra.intersectionPt(someEdge,pline).toString());
 
         return radialLines;//TODO this also can be removed
     }

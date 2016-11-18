@@ -45,6 +45,7 @@ public class PointAngleWrapper implements Comparable{
         }
         else{
             return this.getDistToOrigin().compareTo(((PointAngleWrapper)o).getDistToOrigin());
+
         }
     }
 }

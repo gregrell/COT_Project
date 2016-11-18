@@ -24,8 +24,8 @@ public class Main extends Application implements EventHandler<ActionEvent>{
     private static final int viewWidth = 1400;
     private static final int viewHeight = 1050;
     private static final int gridsize = 1000;
-    private static final int numObstacles = 5;
-    public static final int MaxObstacleSize=gridsize/numObstacles;
+    private static final int numObstacles = 1;
+    public static final int MaxObstacleSize=gridsize/10;
     private static final Color gridColor = Color.DARKBLUE;
     private static final Color fontColor = Color.WHITE;
     private static final String windowTitle = "Obstacle Ground";
@@ -213,19 +213,22 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             gc.setStroke(Color.WHITE);
 
             drawEdges(vg.getGraph().getEdges());
-            List<Edge> radialEdges = vg.VisibleVertices(new Point(720,370),range.getObstacles());
+            List<Edge> radialEdges = vg.VisibleVertices(new Point(320,370),range.getObstacles());
             List<Double> angles = new ArrayList<Double>();
             angles=vg.getAngles();
 
             gc.setFill(Color.CYAN);
 
-            int i=0;
+           /* int i=0;
             for(Point pt:vg.getV()){
                 gc.fillText(angles.get(i).toString(),pt.getX()*xratio,pt.getY()*yratio);
                 i++;
-            }
+            }*/
             gc.setStroke(Color.CRIMSON);
             drawEdges(radialEdges);
+
+            gc.setFill(Color.VIOLET);
+            //gc.fillRect(-463*xratio,92*yratio,5,5);
 
 
         }

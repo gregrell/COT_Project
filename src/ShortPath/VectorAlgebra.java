@@ -66,32 +66,122 @@ public class VectorAlgebra {
 
 
 
-    public static boolean intersection(Edge e1, Edge e2){
-        double A1B2 = e1.getABC().A*e2.getABC().B;
-        double A2B1 = e2.getABC().A*e1.getABC().B;
-        boolean retVal=false;
-        if(A1B2!=A2B1){
-            retVal=true;
+    /*
+    REF: http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
+
+   */
+
+    public static boolean intersects(Edge e1, Edge e2){
+
+        int p0x=e1.getP1().getX();
+        int p0y=e1.getP1().getY();
+        int p1x=e1.getP2().getX();
+        int p1y=e1.getP2().getY();
+        int p2x=e2.getP1().getX();
+        int p2y=e2.getP1().getY();
+        int p3x=e2.getP2().getX();
+        int p3y=e2.getP2().getY();
+        double s02x,s02y,s10x,s10y,s32x,s32y,snumer,tnumer,denom,t;
+        s10x=p1x-p0x;
+        s10y = p1y - p0y;
+        s32x = p3x - p2x;
+        s32y = p3y - p2y;
+
+        denom = s10x * s32y - s32x * s10y;
+        if (denom == 0) {
+            // Collinear
+            return false;
+        }
+        boolean denomPositive = denom > 0;
+        s02x = p0x - p2x;
+        s02y = p0y - p2y;
+        snumer = s10x * s02y - s10y * s02x;
+        if ((snumer < 0) == denomPositive) {
+            // No collision
+            return false;
         }
 
-        return retVal;
+        tnumer = s32x * s02y - s32y * s02x;
+        if ((tnumer < 0) == denomPositive) {
+            // No collision
+            return false;
+        }
+
+        if (((snumer > denom) == denomPositive) || ((tnumer > denom) == denomPositive)) {
+            // No collision
+            return false;
+        }
+        // Collision detected
+        t = tnumer / denom;
+        double xintercept = p0x + (t * s10x);
+        double yintercept = p0y + (t * s10y);
+        System.out.println("collision");
+
+        return true;
+
+
     }
 
-    public static Point intersectionPt(Edge e1, Edge e2){
-        ABCform l1 = e1.getABC();
-        ABCform l2 = e2.getABC();
+    public static Point intersectPt(Edge e1, Edge e2){
+        Point ip = new Point (0,0);
+        int p0x=e1.getP1().getX();
+        int p0y=e1.getP1().getY();
+        int p1x=e1.getP2().getX();
+        int p1y=e1.getP2().getY();
+        int p2x=e2.getP1().getX();
+        int p2y=e2.getP1().getY();
+        int p3x=e2.getP2().getX();
+        int p3y=e2.getP2().getY();
+        double s02x,s02y,s10x,s10y,s32x,s32y,snumer,tnumer,denom,t;
+        s10x=p1x-p0x;
+        s10y = p1y - p0y;
+        s32x = p3x - p2x;
+        s32y = p3y - p2y;
 
-        /*
-        y = (c1a2- c2a1)/(a1b2-a2b1)
+        denom = s10x * s32y - s32x * s10y;
+        if (denom == 0) {
+            // Collinear
+            System.out.println("1");
+            return ip;
+        }
+        boolean denomPositive = denom > 0;
+        s02x = p0x - p2x;
+        s02y = p0y - p2y;
+        snumer = s10x * s02y - s10y * s02x;
+        if ((snumer < 0) == denomPositive) {
+            // No collision
+            System.out.println("2");
 
-        x = -1/a1 - b1y/a1
-        */
+            return ip;
+        }
 
-        double Y = (l1.C*l2.A)/(l1.A*l2.B-l2.A*l2.B);
-        double X = (-1/l1.A)-(l1.B*Y/l1.A);
+        tnumer = s32x * s02y - s32y * s02x;
+        if ((tnumer < 0) == denomPositive) {
+            // No collision
+            System.out.println("3");
 
-        return new Point((int)X,(int)Y);
+            return ip;
+        }
+
+        if (((snumer > denom) == denomPositive) || ((tnumer > denom) == denomPositive)) {
+            // No collision
+            System.out.println("4");
+
+            return ip;
+        }
+        // Collision detected
+        t = tnumer / denom;
+        double xintercept = p0x + (t * s10x);
+        double yintercept = p0y + (t * s10y);
+
+        ip=new Point((int)xintercept,(int)yintercept);
+
+        return ip;
+
+
 
     }
+
+
 
 }
