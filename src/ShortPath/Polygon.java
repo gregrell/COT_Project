@@ -60,9 +60,9 @@ public class Polygon extends Obstacle {
         return Edges;
     }
 
-    public int[] getXpoints(){
+    public float[] getXpoints(){
         int i=0;
-        int[] xPoints = new int[points.size()];
+        float[] xPoints = new float[points.size()];
 
         for(Point p:points){
             xPoints[i]=p.x;
@@ -72,10 +72,10 @@ public class Polygon extends Obstacle {
         return xPoints;
     }
 
-    public int[] getYpoints(){
+    public float[] getYpoints(){
         int i=0;
 
-        int[] yPoints = new int[points.size()];
+        float[] yPoints = new float[points.size()];
         for(Point p:points){
 
             yPoints[i]=p.y;

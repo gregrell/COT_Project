@@ -93,6 +93,8 @@ public class VisibilityGraph {
         V = new ArrayList<Point>();
         E = new ArrayList<Edge>();
         List<Edge> radialLines = new ArrayList<Edge>();
+        List<Edge> intersectLines = new ArrayList<Edge>();
+        List<Edge> nonintersectLines = new ArrayList<Edge>();
 
         for(Obstacle o:O){
             o=(Polygon)o;
@@ -106,8 +108,10 @@ public class VisibilityGraph {
 
 
         }
-
         Collections.sort(sortedV);
+
+
+        //adds all radial lines
         for(Point q:V){//TODO this can be removed
             Edge e = new Edge(p,q);
             radialLines.add(e);
@@ -117,18 +121,27 @@ public class VisibilityGraph {
         for(Edge k:radialLines){
             boolean intersect=false;
             for(Edge j:E){
-                if(VectorAlgebra.intersects(k,j)){
+                Point testPt=VectorAlgebra.segmentProperIntersection(k,j);
+                System.out.println(testPt);
+
+                if((int)testPt.getX()!=0&&(int)testPt.getY()!=0){
                     intersect=true;
                 }
             }
             if(intersect){
                 System.out.println("Intersection Detected");
-                radialLines.remove(k);
+                intersectLines.add(k);
+            }
+            else{
+                System.out.println("NOT Detected");
+
+                nonintersectLines.add(k);
             }
         }
 
 
-        return radialLines;//TODO this also can be removed
+        //return radialLines;//TODO this also can be removed
+        return nonintersectLines;//TODO this also can be removed
     }
 
     public List<Double> getAngles() {

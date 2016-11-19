@@ -6,8 +6,8 @@ import java.io.Serializable;
  * Created by gregrell on 10/21/16.
  */
 public class Point implements Serializable{
-    int x;
-    int y;
+    float x;
+    float y;
     @SuppressWarnings("unused")
 
     //constructor 1 - default
@@ -20,16 +20,16 @@ public class Point implements Serializable{
 
     //constructor 2 - feed in two dimensions as arguments
 
-    public Point(int x, int y){
+    public Point(float x, float y){
         this.x=x;
         this.y=y;
     }
 
-    public int getX() {
+    public float getX() {
         return x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
 

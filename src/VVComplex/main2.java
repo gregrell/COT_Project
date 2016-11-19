@@ -9,13 +9,14 @@ import ShortPath.VectorAlgebra;
  */
 public class main2 {
     public static void main(String[] args){
-        Edge e1 = new Edge(new Point(320,370), new Point(558,459));
-        Edge e2 = new Edge(new Point(558,459),new Point(569,378));
-        //Edge e1 = new Edge(new Point(0,0), new Point(500,500));
-        //Edge e2 = new Edge(new Point(500,500),new Point(500,800));
+        //Edge e1 = new Edge(new Point(320,370), new Point(558,459));
+        //Edge e2 = new Edge(new Point(558,459),new Point(569,378));
+        Edge e2 = new Edge(new Point(1,1), new Point(3,1));
+        //Edge e1 = new Edge(new Point(3,5), new Point(2,1));
+        Edge e1 = new Edge(new Point(2,0),new Point(2,4));
 
-        System.out.println(VectorAlgebra.intersects(e1,e2));
-        System.out.println(VectorAlgebra.intersectPt(e1,e2));
+
+        System.out.println(VectorAlgebra.segmentProperIntersection(e1,e2));
 
 
     }

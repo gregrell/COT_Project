@@ -18,7 +18,7 @@ public class GJK {
         Point closestPoint=polygon.getHull().get(0);
         double maxDotProduct=dotProduct(polygon.getHull().get(0),direction);
         for(Point P:polygon.getHull()){
-            int dotProduct=P.getX()*direction.getX()+P.getY()*direction.getY();
+            float dotProduct=P.getX()*direction.getX()+P.getY()*direction.getY();
             if (dotProduct>maxDotProduct){
                 maxDotProduct=dotProduct;
                 closestPoint=P;

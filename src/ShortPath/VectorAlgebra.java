@@ -64,123 +64,115 @@ public class VectorAlgebra {
         return Math.abs(result-360);
     }
 
-
-
-    /*
-    REF: http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
-
-   */
-
-    public static boolean intersects(Edge e1, Edge e2){
-
-        int p0x=e1.getP1().getX();
-        int p0y=e1.getP1().getY();
-        int p1x=e1.getP2().getX();
-        int p1y=e1.getP2().getY();
-        int p2x=e2.getP1().getX();
-        int p2y=e2.getP1().getY();
-        int p3x=e2.getP2().getX();
-        int p3y=e2.getP2().getY();
-        double s02x,s02y,s10x,s10y,s32x,s32y,snumer,tnumer,denom,t;
-        s10x=p1x-p0x;
-        s10y = p1y - p0y;
-        s32x = p3x - p2x;
-        s32y = p3y - p2y;
-
-        denom = s10x * s32y - s32x * s10y;
-        if (denom == 0) {
-            // Collinear
-            return false;
+    public static Point intersection(Edge e1, Edge e2){
+        float x=0;
+        float y=0;
+        ABCform l1=e1.getABC();
+        ABCform l2=e2.getABC();
+        if(!(l1.slopeInf())&&!(l2.slopeInf())){
+            x = (l2.C-l1.C)/(l2.A-l1.A);
+            y = (-l1.A*x)+l1.C;
         }
-        boolean denomPositive = denom > 0;
-        s02x = p0x - p2x;
-        s02y = p0y - p2y;
-        snumer = s10x * s02y - s10y * s02x;
-        if ((snumer < 0) == denomPositive) {
-            // No collision
-            return false;
+        else if(l1.slopeInf()&&(!(l2.slopeInf()))){
+            System.out.println("infinite slope l1 "+l1.toString());
+            ABCform temp=l1;
+            l1=l2;
+            l2=temp;
+            x=l2.C;
+            y = (-l1.A*x)+l1.C;
         }
+        else if (l2.slopeInf()&&(!l1.slopeInf())){
+            System.out.println("infinite slope l2 "+l2.toString());
 
-        tnumer = s32x * s02y - s32y * s02x;
-        if ((tnumer < 0) == denomPositive) {
-            // No collision
-            return false;
+            x=l2.C;
+            y = (-l1.A*x)+l1.C;
         }
-
-        if (((snumer > denom) == denomPositive) || ((tnumer > denom) == denomPositive)) {
-            // No collision
-            return false;
+        else{
+            //both are infinite slope do nothing
         }
-        // Collision detected
-        t = tnumer / denom;
-        double xintercept = p0x + (t * s10x);
-        double yintercept = p0y + (t * s10y);
-        System.out.println("collision");
+        Point intersectPt= new Point(x,y);
+        //System.out.println(intersectPt);
+        return intersectPt;
+    }
 
-        return true;
+    public static Point segmentIntersection(Edge e1, Edge e2){
+        Point intersectPt=intersection(e1,e2);
+        boolean existsL1=false;
+        boolean existsL2=false;
+        //line 1:
+        existsL1=onSegment(e1.getP1(),e1.getP2(),intersectPt);
+        existsL2=onSegment(e2.getP1(),e2.getP2(),intersectPt);
 
+        if(existsL1&&existsL2){
+            return intersectPt;
+        }
+        else
+            return new Point(0,0);
 
     }
 
-    public static Point intersectPt(Edge e1, Edge e2){
-        Point ip = new Point (0,0);
-        int p0x=e1.getP1().getX();
-        int p0y=e1.getP1().getY();
-        int p1x=e1.getP2().getX();
-        int p1y=e1.getP2().getY();
-        int p2x=e2.getP1().getX();
-        int p2y=e2.getP1().getY();
-        int p3x=e2.getP2().getX();
-        int p3y=e2.getP2().getY();
-        double s02x,s02y,s10x,s10y,s32x,s32y,snumer,tnumer,denom,t;
-        s10x=p1x-p0x;
-        s10y = p1y - p0y;
-        s32x = p3x - p2x;
-        s32y = p3y - p2y;
+    public static Point segmentProperIntersection(Edge e1, Edge e2){
+        Point intersectPt=intersection(e1,e2);
+        boolean existsL1=false;
+        boolean existsL2=false;
+        boolean notEndpoit=true;
+        //line 1:
+        existsL1=onSegment(e1.getP1(),e1.getP2(),intersectPt);
+        existsL2=onSegment(e2.getP1(),e2.getP2(),intersectPt);
 
-        denom = s10x * s32y - s32x * s10y;
-        if (denom == 0) {
-            // Collinear
-            System.out.println("1");
-            return ip;
+        System.out.println("Intersect Pt "+intersectPt+" e1-p1 "+e1.getP1()+" e1-p2 "+e1.getP2()+" e2-p1 "+e2.getP1()+" e2-p2 "+e2.getP2());
+
+        if(samePoints(intersectPt,e1.getP1())){
+            System.out.println("same as e1p1");
+            notEndpoit=false;
         }
-        boolean denomPositive = denom > 0;
-        s02x = p0x - p2x;
-        s02y = p0y - p2y;
-        snumer = s10x * s02y - s10y * s02x;
-        if ((snumer < 0) == denomPositive) {
-            // No collision
-            System.out.println("2");
+        else if(samePoints(intersectPt,e1.getP2())){
+            notEndpoit=false;
 
-            return ip;
+        }
+        else if(samePoints(intersectPt,e2.getP1())){
+            notEndpoit=false;
+
+        }
+        else if(samePoints(intersectPt,e2.getP2())){
+            notEndpoit=false;
+
         }
 
-        tnumer = s32x * s02y - s32y * s02x;
-        if ((tnumer < 0) == denomPositive) {
-            // No collision
-            System.out.println("3");
 
-            return ip;
+        if(existsL1&&existsL2&&notEndpoit){
+            return intersectPt;
         }
-
-        if (((snumer > denom) == denomPositive) || ((tnumer > denom) == denomPositive)) {
-            // No collision
-            System.out.println("4");
-
-            return ip;
-        }
-        // Collision detected
-        t = tnumer / denom;
-        double xintercept = p0x + (t * s10x);
-        double yintercept = p0y + (t * s10y);
-
-        ip=new Point((int)xintercept,(int)yintercept);
-
-        return ip;
-
-
+        else
+            return new Point(0,0);
 
     }
+
+    public static boolean samePoints(Point p1, Point p2){
+        boolean samepts=false;
+        if((Math.round(p1.getX())==Math.round(p2.getX()))&&(Math.round(p1.getY())==Math.round(p2.getY()))){
+            samepts=true;
+        }
+
+        System.out.println("Same Points Check P1 "+p1.toString()+" P2 "+p2+" Results in "+samepts);
+        return samepts;
+    }
+
+    public static boolean onSegment(Point a, Point b, Point c){
+        double distAC = distance2pts(a,c);
+        double distCB = distance2pts(c,b);
+        double distAB = distance2pts(a,b);
+        //doing a floating point comparison requires getting the integer value to three decimal places and comparing those components
+        distAB=distAB*1000;
+        distAC=distAC*1000;
+        distCB=distCB*1000;
+
+        //System.out.println("Distance AC "+distAC+" Distance CB "+distCB+" Distance AB "+distAB+" Distance AC to CB "+(distAC+distCB));
+
+
+        return ((int)(distAC+distCB)==(int)(distAB));
+    }
+
 
 
 
