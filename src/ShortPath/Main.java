@@ -24,7 +24,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
     private static final int viewWidth = 1400;
     private static final int viewHeight = 1050;
     private static final int gridsize = 1000;
-    private static final int numObstacles = 5;
+    private static final int numObstacles = 500;
     public static final int MaxObstacleSize=gridsize/10;
     private static final Color gridColor = Color.DARKBLUE;
     private static final Color fontColor = Color.WHITE;
@@ -130,6 +130,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
         if (event.getSource()==GeneratePolygons) {
             clearCanvas();
             gc.setStroke(Color.WHITE);
+            gc.setFill(Color.WHITE);
 
             if (!ObstacleRange.exists) {
                 range = new ObstacleRange(gridsize, gridsize, numObstacles);
@@ -147,6 +148,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             for (Obstacle O:range.getObstacles()) {
                 if(O instanceof PointObstacle){
                     gc.fillRect(O.getRoot().x*(xratio),O.getRoot().y,5*(yratio),5);
+                    //System.out.println(O.toString());
                 }
                 if(O instanceof Polygon){
                     Polygon p = (Polygon)O;
