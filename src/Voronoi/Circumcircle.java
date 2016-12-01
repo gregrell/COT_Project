@@ -86,8 +86,8 @@ public class Circumcircle {
     }
 }
 
-class CircleCalcs{
-    public static float Tarea (Point A, Point B, Point C){
+class CircleCalcs{//class of static calls
+    public static float Tarea (Point A, Point B, Point C){//calculate triangle area of three points
        /* float partial=(B.getX()*C.getY())-(B.getY()*C.getX())-(A.getX()*C.getY())+(A.getY()*C.getX())+(A.getX()*B.getY())-(A.getY()*B.getX());
         return partial/2;*/
         //float radius = radius(A,B,C);
@@ -105,18 +105,18 @@ class CircleCalcs{
 
         float innerDenom = (float)(s*(s-a)*(s-b)*(s-c));
         float sqrtinnerDenom = (float)Math.sqrt(innerDenom);
-        System.out.println("side a="+a+" side b="+b+" side c="+c+" Area="+sqrtinnerDenom);
+        //System.out.println("side a="+a+" side b="+b+" side c="+c+" Area="+sqrtinnerDenom);
         return sqrtinnerDenom;
     }
 
-    public static float Carea(Point A, Point B, Point C){
+    public static float Carea(Point A, Point B, Point C){//calculate area of circumcircle
         float radius = radius(A,B,C);
         return (float)(Math.PI*Math.pow(radius,2));
 
     }
 
 
-    public static float radius(Point A, Point B, Point C){
+    public static float radius(Point A, Point B, Point C){//find radius of circumcircle given three points
         double a = VectorAlgebra.distance2pts(C,B);
         double b = VectorAlgebra.distance2pts(A,C);
         double c = VectorAlgebra.distance2pts(B,A);
@@ -136,7 +136,7 @@ class CircleCalcs{
         return radius;
     }
 
-    public static Point findCenter(Point A, Point B, Point C){
+    public static Point findCenter(Point A, Point B, Point C){ //find center of circumcircle given three points
         Point a = new Point(C.getX()-B.getX(),C.getY()-B.getY());
         Point b = new Point(A.getX()-C.getX(),A.getY()-C.getY());
         Point c = new Point(B.getX()-A.getX(),B.getY()-A.getY());
@@ -180,9 +180,6 @@ class CircleCalcs{
         float Uy=(((Axsqrd+Aysqrd)*(C.getX()-B.getX()))+((Bxsqrd+Bysqrd)*(A.getX()-C.getX()))+(Cxsqrd+Cysqrd)*(B.getX()-A.getX()))/(D);
 
         return new Point(Ux,Uy);
-
-
-
 
     }
 
