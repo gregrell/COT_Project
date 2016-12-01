@@ -2,10 +2,12 @@ package ShortPath;
 
 import java.io.Serializable;
 
+import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
+
 /**
  * Created by gregrell on 10/21/16.
  */
-public class Point implements Serializable{
+public class Point implements Serializable, Comparable{
     float x;
     float y;
     @SuppressWarnings("unused")
@@ -51,5 +53,11 @@ public class Point implements Serializable{
                 "x=" + x +
                 ", y=" + y +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Object o) {
+
+        return Float.compare(this.getY(),((Point)o).getY());
     }
 }

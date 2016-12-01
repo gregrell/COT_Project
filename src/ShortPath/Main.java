@@ -2,6 +2,7 @@ package ShortPath;
 
 import COT5405.COTIOStream;
 import VVComplex.VisibilityGraph;
+import Voronoi.VoronoiDiagram;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -147,7 +148,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
             for (Obstacle O:range.getObstacles()) {
                 if(O instanceof PointObstacle){
-                    gc.fillRect(O.getRoot().x*(xratio),O.getRoot().y,5*(yratio),5);
+                    gc.fillRect(O.getRoot().x*(xratio),O.getRoot().y,2*(yratio),2);
                     //System.out.println(O.toString());
                 }
                 if(O instanceof Polygon){
@@ -162,6 +163,10 @@ public class Main extends Application implements EventHandler<ActionEvent>{
                     gc.strokePolygon(xpoints,ypoints,p.getHull().size());
                 }
             }
+
+
+            ///Generate Voronoi diagram object
+            VoronoiDiagram Vor = new VoronoiDiagram(range.getObstacles());
 
         }
 

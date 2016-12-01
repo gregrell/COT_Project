@@ -148,7 +148,7 @@ public class VectorAlgebra {
 
     }
 
-    public static boolean samePoints(Point p1, Point p2){
+    public static boolean samePoints(Point p1, Point p2){ // compute if two points are nearly the same with only rounding error differences
         boolean samepts=false;
         if((Math.round(p1.getX())==Math.round(p2.getX()))&&(Math.round(p1.getY())==Math.round(p2.getY()))){
             samepts=true;
@@ -172,6 +172,7 @@ public class VectorAlgebra {
 
         return ((int)(distAC+distCB)==(int)(distAB));
     }
+
 
 
 
