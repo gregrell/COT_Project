@@ -25,7 +25,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
     private static final int viewWidth = 1400;
     private static final int viewHeight = 1050;
     private static final int gridsize = 1000;
-    private static final int numObstacles = 500;
+    private static final int numObstacles = 10;
     public static final int MaxObstacleSize=gridsize/10;
     private static final Color gridColor = Color.DARKBLUE;
     private static final Color fontColor = Color.WHITE;
@@ -163,6 +163,10 @@ public class Main extends Application implements EventHandler<ActionEvent>{
                     gc.strokePolygon(xpoints,ypoints,p.getHull().size());
                 }
             }
+
+            gc.setFill(Color.RED);
+
+
 
 
             ///Generate Voronoi diagram object
