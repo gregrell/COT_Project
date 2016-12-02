@@ -19,6 +19,7 @@ public class Arc extends BLitem {
     float c;
     List<Point> sweep = new ArrayList<Point>();
     Event e;
+    Segment left, right;
 
     public Arc(Point focus, float directix, Event e){
         super(focus);
@@ -51,5 +52,29 @@ public class Arc extends BLitem {
 
     public List<Point> getSweep() {
         return sweep;
+    }
+
+    public Event getE() {
+        return e;
+    }
+
+    public void setE(Event e) {
+        this.e = e;
+    }
+
+    public Segment getLeft() {
+        return left;
+    }
+
+    public void setLeft(Segment left) {
+        this.left = left;
+    }
+
+    public Segment getRight() {
+        return right;
+    }
+
+    public void setRight(Segment right) {
+        this.right = right;
     }
 }
