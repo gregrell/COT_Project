@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 
-public class Arc extends BLitem {
+public class Arc {
     Point focus;
     float directix;
     String formula;
@@ -19,10 +19,10 @@ public class Arc extends BLitem {
     float c;
     List<Point> sweep = new ArrayList<Point>();
     Event e;
-    Segment left, right;
+    Segment segLeft, segRight;
+    Arc prev,next;
 
     public Arc(Point focus, float directix, Event e){
-        super(focus);
         this.e=e;
         this.directix=directix;
         this.focus=focus;
@@ -33,10 +33,23 @@ public class Arc extends BLitem {
         dosweep();
     }
 
+    public Arc(Point focus, Arc prev, Arc next){
+        this.focus=focus;
+        this.prev=prev;
+        this.next=next;
+
+    }
+    public Arc(Point focus, Arc prev){
+        this.focus=focus;
+        this.prev=prev;
+        this.next=null;
+
+    }
+
     private void dosweep(){
         for (int i=0;i<5000;i++){
-            float y = ((float)Math.pow(((float)i-a),2)+((float)Math.pow(b,2))-((float)Math.pow(c,2)))/(2*(b-c));
-            Point p = new Point((float)i,y);
+            float x = ((float)Math.pow(((float)i-a),2)+((float)Math.pow(b,2))-((float)Math.pow(c,2)))/(2*(b-c));
+            Point p = new Point(x,(float)i);
             sweep.add(p);
         }
     }
@@ -62,19 +75,46 @@ public class Arc extends BLitem {
         this.e = e;
     }
 
-    public Segment getLeft() {
-        return left;
+    public Segment getSegLeft() {
+        return segLeft;
     }
 
-    public void setLeft(Segment left) {
-        this.left = left;
+    public void setSegLeft(Segment segLeft) {
+        this.segLeft = segLeft;
     }
 
-    public Segment getRight() {
-        return right;
+    public Segment getSegRight() {
+        return segRight;
     }
 
-    public void setRight(Segment right) {
-        this.right = right;
+    public void setSegRight(Segment segRight) {
+        this.segRight = segRight;
+    }
+
+    public Arc getPrev() {
+        return prev;
+    }
+
+    public void setPrev(Arc prev) {
+        this.prev = prev;
+    }
+
+    public Arc getNext() {
+        return next;
+    }
+
+    public void setNext(Arc next) {
+        this.next = next;
+    }
+
+    public void setEventNull(){
+        this.e=null;
+    }
+
+    @Override
+    public String toString() {
+        return "Arc{" +
+                "focus=" + focus +
+                '}';
     }
 }

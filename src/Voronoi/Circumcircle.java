@@ -12,10 +12,11 @@ public class Circumcircle {
     Point center;
     float radius;
     Point A,B,C;
-    float highestY;
-    float lowestY;
+    float highestX;
+    float lowestX;
     float Tarea;
     float Carea;
+    boolean valid=true;
 
     public Circumcircle(Point A, Point B, Point C){
         this.A=A;
@@ -23,10 +24,12 @@ public class Circumcircle {
         this.C=C;
         center = findCenter(A,B,C);
         radius = radius(A,B,C);
-        highestY =center.getY()+radius;
-        lowestY = center.getY()-radius;
+        highestX =center.getX()+radius;
+        lowestX = center.getX()-radius;
         Tarea= Tarea(A,B,C);
         Carea=Carea(A,B,C);
+        checkValidity();
+        //System.out.println("Validity check "+valid);
 
         //System.out.println(radius);
         //System.out.println(center);
@@ -53,12 +56,12 @@ public class Circumcircle {
         return C;
     }
 
-    public float getHighestY() {
-        return highestY;
+    public float getHighestX() {
+        return highestX;
     }
 
-    public float getLowestY() {
-        return lowestY;
+    public float getLowestX() {
+        return lowestX;
     }
 
     public float getTarea() {
@@ -67,6 +70,51 @@ public class Circumcircle {
 
     public float getCarea() {
         return Carea;
+    }
+
+    public boolean valid(){
+        return valid;
+    }
+
+    private void checkValidity(){
+        /*
+        // Check that bc is a "right turn" from ab.
+        if ((b.x-a.x)*(c.y-a.y) - (c.x-a.x)*(b.y-a.y) > 0)
+            return false;
+
+        // Algorithm from O'Rourke 2ed p. 189.
+        double A = b.x - a.x,  B = b.y - a.y,
+                C = c.x - a.x,  D = c.y - a.y,
+                E = A*(a.x+b.x) + B*(a.y+b.y),
+                F = C*(a.x+c.x) + D*(a.y+c.y),
+                G = 2*(A*(c.y-b.y) - B*(c.x-b.x));
+
+        if (G == 0) return false;  // Points are co-linear.
+
+        // Point o is the center of the circle.
+        o->x = (D*E-B*F)/G;
+        o->y = (A*F-C*E)/G;
+
+        // o.x plus radius equals max x coordinate.
+   *x = o->x + sqrt( pow(a.x - o->x, 2) + pow(a.y - o->y, 2) );
+        return true;*/
+
+        // Check that bc is a "right turn" from ab.
+        if(((B.getX()-A.getX())*(C.getY()-A.getY()) - ((C.getX()-A.getX())*(B.getY()-A.getY())))>0){
+            valid=false;
+            return;
+        }
+        // Algorithm from O'Rourke 2ed p. 189.
+        float a = B.getX()-A.getX(), b = B.getX()-A.getY(),
+                G=2*(a*(C.getY()-B.getY())) - b*(C.getX()-B.getX());
+
+        if(G==0){//points are colinear
+            valid=false;
+            return;
+        }
+
+        valid=true;
+
     }
 
 
@@ -78,8 +126,8 @@ public class Circumcircle {
                 ", A=" + A +
                 ", B=" + B +
                 ", C=" + C +
-                ", highestY=" + highestY +
-                ", lowestY=" + lowestY +
+                ", highestX=" + highestX +
+                ", lowestX=" + lowestX +
                 ", Triangle Area=" + Tarea +
                 ", Circle Area=" + Carea +
                 '}';
@@ -120,11 +168,7 @@ class CircleCalcs{//class of static calls
         double a = VectorAlgebra.distance2pts(C,B);
         double b = VectorAlgebra.distance2pts(A,C);
         double c = VectorAlgebra.distance2pts(B,A);
-        /*float area=Tarea(A,B,C);
-        System.out.println("a= "+a+" b= "+b+" c="+c);
-        System.out.println("4xarea = "+4*area);
 
-        float radius = ((float)a*(float)b*(float)c)/(4*area);*/
 
         float s = (float)(a+b+c)/2;
         float numerator = (float)(a*b*c);
@@ -141,31 +185,6 @@ class CircleCalcs{//class of static calls
         Point b = new Point(A.getX()-C.getX(),A.getY()-C.getY());
         Point c = new Point(B.getX()-A.getX(),B.getY()-A.getY());
         float triangleArea = Tarea(A,B,C);
-
-        /*float fourtimestrianglearea = -4*triangleArea;
-        //System.out.println(a);System.out.println(b);System.out.println(c);
-        //System.out.println(triangleArea);
-        //System.out.println(fourtimestrianglearea);
-
-        double dpaa=VectorAlgebra.dotProduct(a,a);
-        double dpbc=VectorAlgebra.dotProduct(b,c);
-        double dpbb=VectorAlgebra.dotProduct(b,b);
-        double dpac=VectorAlgebra.dotProduct(a,c);
-        double dpcc=VectorAlgebra.dotProduct(c,c);
-        double dpab=VectorAlgebra.dotProduct(a,b);
-
-        Point Ap=new Point ((float)dpaa*(float)dpbc*A.getX(),(float)dpaa*(float)dpbc*A.getY());
-        Point Bp=new Point ((float)dpbb*(float)dpac*B.getX(),(float)dpbb*(float)dpac*B.getY());
-        Point Cp=new Point ((float)dpcc*(float)dpab*C.getX(),(float)dpcc*(float)dpab*C.getY());
-
-        //System.out.println(Ap);
-        //System.out.println(Bp);
-        //System.out.println(Cp);
-
-        Point cc = new Point(((Ap.getX()+Bp.getX()+Cp.getX()))/fourtimestrianglearea,((Ap.getY()+Bp.getY()+Cp.getY())/fourtimestrianglearea));
-        //System.out.println(VectorAlgebra.distance2pts(A,cc));
-
-        return cc;*/
 
         float Axsqrd=A.getX()*A.getX();
         float Aysqrd=A.getY()*A.getY();

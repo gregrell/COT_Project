@@ -2,7 +2,6 @@ package VVComplex;
 
 import ShortPath.Point;
 import Voronoi.Circumcircle;
-import Voronoi.Arc;
 
 /**
  * Created by 206417559 on 11/18/2016.
@@ -16,10 +15,10 @@ public class main2 {
         Point C = new Point(1,1);
         Circumcircle cc = new Circumcircle(A,B,C);
 
-        System.out.println(cc.toString()+" the lowest Y event is "+cc.getLowestY());
+        System.out.println(cc.toString()+" the lowest X event is "+cc.getLowestX());
 
-        Arc parab = new Arc(new Point(0,2),0);
-        System.out.println(parab.getSweep());
+        //Arc parab = new Arc(new Point(0,2),0);
+        //System.out.println(parab.getSweep());
 
         //System.out.println(VectorAlgebra.segmentProperIntersection(e1,e2));
 

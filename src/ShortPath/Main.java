@@ -2,6 +2,9 @@ package ShortPath;
 
 import COT5405.COTIOStream;
 import VVComplex.VisibilityGraph;
+import Voronoi.Arc;
+import Voronoi.Event;
+import Voronoi.Segment;
 import Voronoi.VoronoiDiagram;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -25,7 +28,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
     private static final int viewWidth = 1400;
     private static final int viewHeight = 1050;
     private static final int gridsize = 1000;
-    private static final int numObstacles = 10;
+    private static final int numObstacles = 3;
     public static final int MaxObstacleSize=gridsize/10;
     private static final Color gridColor = Color.DARKBLUE;
     private static final Color fontColor = Color.WHITE;
@@ -165,12 +168,21 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             }
 
             gc.setFill(Color.RED);
+/*
+            Arc a= new Arc (new Point(300,300),301,new Event(new Point(0,0)));
 
-
+            for (Point p:a.getSweep()){
+                gc.fillRect(p.x*(xratio),p.y,2*(yratio),2);
+            }*/
 
 
             ///Generate Voronoi diagram object
             VoronoiDiagram Vor = new VoronoiDiagram(range.getObstacles());
+            for(Segment seg:Vor.getSegmentList()){
+                Edge e=seg.toEdge();
+                gc.strokeLine(e.p1.x*xratio,e.p1.y*yratio,e.p2.x*xratio,e.p2.y*yratio);
+            }
+
 
         }
 
