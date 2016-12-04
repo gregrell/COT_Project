@@ -10,11 +10,13 @@ public class Event implements Comparable{
     Arc arc;
     float x;
     boolean valid=false;
-    public Event(float x, Point location, Arc arc){
+    Circumcircle cc;
+    public Event(float x, Point location, Arc arc, Circumcircle cc){
         this.x=x;
         this.arc=arc;
         this.location=location;
         valid=true;
+        this.cc=cc;
     }
     public Event(Point location){
         this.location=location;
@@ -40,6 +42,10 @@ public class Event implements Comparable{
 
     public void setArc(Arc arc) {
         this.arc = arc;
+    }
+
+    public Circumcircle getCc() {
+        return cc;
     }
 
     @Override

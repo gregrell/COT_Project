@@ -20,7 +20,7 @@ class ObstacleRange {
     static boolean exists =false;
 
     List<Polygon> Polygons;
-    List<PointObstacle> Points;
+    List<PointObstacle> Points= new ArrayList<PointObstacle>();
 
     public ObstacleRange(@SuppressWarnings("SameParameterValue") int xSize, @SuppressWarnings("SameParameterValue") int ySize, @SuppressWarnings("SameParameterValue") int numObstacles){
         exists =true;
@@ -44,6 +44,18 @@ class ObstacleRange {
 
         pointGenerator = new PointObstacleGenerator(numObstacles,xSize,ySize);
         Points=pointGenerator.getPointsList();
+        PointObstacle a = new PointObstacle (200,200);
+        PointObstacle b = new PointObstacle (400,250);
+        PointObstacle c = new PointObstacle (300,500);
+        a.setRoot(new Point(200,200));
+        b.setRoot(new Point(400,250));
+        c.setRoot(new Point(300,500));
+
+        Points.clear();
+        Points.add(a);
+        Points.add(b);
+        Points.add(c);
+
 
 
         //TODO here we need to implement GJK algorithm https://www.youtube.com/watch?v=Qupqu1xe7Io for collision detection of convex hulls. Compare it to teh set of Obstacles and if no collision detected then add to set

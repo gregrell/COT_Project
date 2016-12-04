@@ -28,7 +28,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
     private static final int viewWidth = 1400;
     private static final int viewHeight = 1050;
     private static final int gridsize = 1000;
-    private static final int numObstacles = 3;
+    private static final int numObstacles = 5;
     public static final int MaxObstacleSize=gridsize/10;
     private static final Color gridColor = Color.DARKBLUE;
     private static final Color fontColor = Color.WHITE;
@@ -151,7 +151,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
             for (Obstacle O:range.getObstacles()) {
                 if(O instanceof PointObstacle){
-                    gc.fillRect(O.getRoot().x*(xratio),O.getRoot().y,2*(yratio),2);
+                    //gc.fillRect(O.getRoot().x*(xratio),O.getRoot().y,4*(yratio),4);
                     //System.out.println(O.toString());
                 }
                 if(O instanceof Polygon){
@@ -174,13 +174,19 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             for (Point p:a.getSweep()){
                 gc.fillRect(p.x*(xratio),p.y,2*(yratio),2);
             }*/
+            gc.setStroke(Color.RED);
 
 
             ///Generate Voronoi diagram object
-            VoronoiDiagram Vor = new VoronoiDiagram(range.getObstacles());
+            //System.out.println("Range obstacles "+range.getObstacles());
+            VoronoiDiagram Vor = new VoronoiDiagram(range.getObstacles(),gc);
             for(Segment seg:Vor.getSegmentList()){
                 Edge e=seg.toEdge();
-                gc.strokeLine(e.p1.x*xratio,e.p1.y*yratio,e.p2.x*xratio,e.p2.y*yratio);
+                gc.setStroke(Color.RED);
+                gc.setFill(Color.RED);
+
+
+                gc.strokeLine(e.p1.x,e.p1.y,e.p2.x,e.p2.y);
             }
 
 

@@ -2,6 +2,8 @@ package Voronoi;
 
 import ShortPath.Obstacle;
 import ShortPath.Point;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,18 +16,20 @@ public class VoronoiDiagram {
     PriorityQueue Q;
     Arc root;
     List<Segment> segmentList = new ArrayList<Segment>();
+    GraphicsContext gc;
 
 
-    public VoronoiDiagram(List<Obstacle> Obstacles){
+    public VoronoiDiagram(List<Obstacle> Obstacles, GraphicsContext gc){
+        this.gc=gc;
         Q = new PriorityQueue(); //construct a priority queue and put all points in it, it will pop with X in increasing order
         for(Obstacle o:Obstacles){
             Q.add(new SiteEvent((Point)o.getRoot()));
-
         }
 
         construct();
+        finishEdges();
 
-        System.out.println(segmentList.size());
+        //System.out.println(segmentList.size());
         for(Segment se:segmentList){
             System.out.println(se.toString());
         }
@@ -42,12 +46,30 @@ public class VoronoiDiagram {
             if(removed instanceof SiteEvent){
                 //System.out.println("Site Event "+removed.toString());
                 //handle site event
+                gc.setFill(Color.WHITE);
+                gc.setStroke(Color.WHITE);
+
+
+                gc.strokeText(removed.getLocation().toString(),removed.getLocation().getX()-5,removed.getLocation().getY()-5);
+
+                gc.fillRect(removed.getLocation().getX(),removed.getLocation().getY(),2,2);
+
                 handleSiteEvent(removed);
 
             }
             else{
-                System.out.println("Circle Event "+removed.toString());
+                //System.out.println("Circle Event "+removed.toString());
                 //handle circle event
+
+                gc.setStroke(Color.VIOLET);
+                gc.setFill(Color.VIOLET);
+
+                gc.strokeText(removed.getLocation().toString(),removed.getLocation().getX()-5,removed.getLocation().getY()-5);//circle point text
+                gc.fillRect(removed.getLocation().getX(),removed.getLocation().getY(),2,2);//circle center point fill
+
+
+
+                gc.strokeOval(removed.getLocation().getX()-removed.getCc().getRadius(),removed.getLocation().getY()-removed.getCc().getRadius(),2*removed.getCc().getRadius(),2*removed.getCc().getRadius());
                 ProcessEvent(removed);
             }
         }
@@ -156,10 +178,12 @@ public class VoronoiDiagram {
             if (a.getSegLeft()!=null){
                 a.getSegLeft().setEnd(e.getLocation());
                 segmentList.add(a.getSegLeft());
+                System.out.println("Process Finishing Segment Left "+a.getSegLeft().toString());
             }
             if (a.getSegRight()!=null){
                 a.getSegRight().setEnd(e.getLocation());
                 segmentList.add(a.getSegRight());
+                System.out.println("Process Finishing segment Right "+a.getSegRight().toString());
             }
 
 
@@ -168,6 +192,7 @@ public class VoronoiDiagram {
             if (a.getNext()!=null) checkCircleEvent(a.getNext(), e.x);
 
         }
+        //System.out.println(e.toString()+" event was not valid");
         //delete e;
 
     }
@@ -177,8 +202,9 @@ public class VoronoiDiagram {
         //invalidate any old event
         if(i.getE()!=null && i.getE().location.getX()!=x0){
             i.getE().setValid(false);
+            i.setEventNull();
         }
-        i.setEventNull();
+        //i.setEventNull();
         if(i.getPrev()==null||i.getNext()==null){
             return;
         }
@@ -187,11 +213,22 @@ public class VoronoiDiagram {
         Circumcircle cc = new Circumcircle(i.prev.focus,i.focus,i.next.focus);
         o=cc.getCenter();
         x=cc.highestX;
-
-        if(cc.valid() && x>x0){
-            i.setE(new Event(x,o,i));
+        //System.out.println("Cirle is valid "+cc.valid());
+        if(cc.valid()||true && x>x0){//TODO remove TRUE from IF evaluation
+            i.setE(new Event(x,o,i,cc));
             Q.add(i.getE());
+        }
+    }
 
+
+    private void finishEdges(){
+        float l = 4000;
+        for(Arc i=root;i.getNext()!=null;i=i.getNext()){
+            if(i.getSegRight()!=null){
+                i.getSegRight().setEnd(VoronoiCalcs.parabolaIntersection(i.focus,i.getNext().focus,2*l));
+                //segmentList.add(i.getSegRight());
+                System.out.println("Finish segment added"+i.getSegRight().toString());
+            }
         }
     }
 
