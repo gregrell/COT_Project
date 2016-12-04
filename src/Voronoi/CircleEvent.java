@@ -7,6 +7,6 @@ import ShortPath.Point;
  */
 public class CircleEvent extends Event {
     public CircleEvent (Point location){
-        super(location);
+        super(location.getX(),location);
     }
 }

@@ -19,8 +19,8 @@ public class Arc {
     float c;
     List<Point> sweep = new ArrayList<Point>();
     Event e;
-    Segment segLeft, segRight;
-    Arc prev,next;
+    Segment segLeft=null, segRight=null;
+    Arc prev=null,next=null;
 
     public Arc(Point focus, float directix, Event e){
         this.e=e;
@@ -115,6 +115,8 @@ public class Arc {
     public String toString() {
         return "Arc{" +
                 "focus=" + focus +
+                " previous exists "+(prev!=null)+
+                " next exists "+(next!=null)+
                 '}';
     }
 }

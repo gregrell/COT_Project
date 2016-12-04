@@ -181,6 +181,8 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             //System.out.println("Range obstacles "+range.getObstacles());
             VoronoiDiagram Vor = new VoronoiDiagram(range.getObstacles(),gc);
             for(Segment seg:Vor.getSegmentList()){
+                System.out.println("Edges Drawn "+seg.toString());
+
                 Edge e=seg.toEdge();
                 gc.setStroke(Color.RED);
                 gc.setFill(Color.RED);

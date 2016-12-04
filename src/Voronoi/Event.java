@@ -18,7 +18,7 @@ public class Event implements Comparable{
         valid=true;
         this.cc=cc;
     }
-    public Event(Point location){
+    public Event(float x,Point location){
         this.location=location;
         valid=true;
     }
@@ -55,8 +55,13 @@ public class Event implements Comparable{
                 '}';
     }
 
-    @Override
+   /* @Override
     public int compareTo(Object o) {
         return (this.location.compareTo(((Event)o).getLocation()));
+    }*/
+
+    @Override
+    public int compareTo(Object o) {
+        return Float.compare(x,((Event)o).x);
     }
 }

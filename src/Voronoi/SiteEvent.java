@@ -7,7 +7,7 @@ import ShortPath.Point;
  */
 public class SiteEvent extends Event {
     public SiteEvent(Point location){
-        super(location);
+        super(location.getX(),location);
     }
 
 

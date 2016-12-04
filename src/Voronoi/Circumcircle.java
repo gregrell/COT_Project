@@ -100,10 +100,11 @@ public class Circumcircle {
         return true;*/
 
         // Check that bc is a "right turn" from ab.
+        /*
         if(((B.getX()-A.getX())*(C.getY()-A.getY()) - ((C.getX()-A.getX())*(B.getY()-A.getY())))>0){
             valid=false;
             return;
-        }
+        }*/
         // Algorithm from O'Rourke 2ed p. 189.
         float a = B.getX()-A.getX(), b = B.getX()-A.getY(),
                 G=2*(a*(C.getY()-B.getY())) - b*(C.getX()-B.getX());

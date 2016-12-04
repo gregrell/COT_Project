@@ -17,6 +17,8 @@ public class VoronoiDiagram {
     Arc root;
     List<Segment> segmentList = new ArrayList<Segment>();
     GraphicsContext gc;
+    float X0=0,Y0=0,X1=0,Y1=0;
+
 
 
     public VoronoiDiagram(List<Obstacle> Obstacles, GraphicsContext gc){
@@ -24,17 +26,31 @@ public class VoronoiDiagram {
         Q = new PriorityQueue(); //construct a priority queue and put all points in it, it will pop with X in increasing order
         for(Obstacle o:Obstacles){
             Q.add(new SiteEvent((Point)o.getRoot()));
+            updateBoundBox((Point)o.getRoot());
         }
 
         construct();
         finishEdges();
 
-        //System.out.println(segmentList.size());
-        for(Segment se:segmentList){
-            System.out.println(se.toString());
-        }
+
 
     }
+
+    private void updateBoundBox(Point p){
+        if(p.getX()<X0){
+            X0=p.getX();
+        }
+        if(p.getX()>X1){
+            X1=p.getX();
+        }
+        if(p.getY()<Y0){
+            Y0=p.getY();
+        }
+        if(p.getY()>Y1){
+            Y1=p.getY();
+        }
+    }
+
 
     public List<Segment> getSegmentList() {
         return segmentList;
@@ -64,8 +80,8 @@ public class VoronoiDiagram {
                 gc.setStroke(Color.VIOLET);
                 gc.setFill(Color.VIOLET);
 
-                gc.strokeText(removed.getLocation().toString(),removed.getLocation().getX()-5,removed.getLocation().getY()-5);//circle point text
-                gc.fillRect(removed.getLocation().getX(),removed.getLocation().getY(),2,2);//circle center point fill
+               // gc.strokeText(removed.getLocation().toString(),removed.getLocation().getX()-5,removed.getLocation().getY()-5);//circle point text
+                //gc.fillRect(removed.getLocation().getX(),removed.getLocation().getY(),2,2);//circle center point fill
 
 
 
@@ -78,38 +94,33 @@ public class VoronoiDiagram {
     private void handleSiteEvent(Event e){
         if(root==null){
             root=new Arc(e.getLocation(),null,null);
-            System.out.println("Was NULL");
-
             return;
         }
         //System.out.println("New Iteration");
 
         for(Arc i=root; i!=null;i=i.getNext()){//traverse linked list
-            //System.out.println(i.toString());
             //if intersect
             Point z = new Point(0,0);
             Point zz= new Point(0,0);
             if(VoronoiCalcs.Intersects(e.getLocation(),i,z)){
-                //System.out.println("Intersects case");
-
-                //new parabola intersects i, if necessary then duplicate i
                 if(i.getNext()!=null && !VoronoiCalcs.Intersects(e.getLocation(),i.getNext(),zz)){
-                    //System.out.println("Case 1");
 
                     i.getNext().setPrev(new Arc(i.focus,i,i.getNext()));
                     i.setNext(i.getNext().getPrev());
                 }
                 else{
-                    //System.out.println("Case 2");
-
-                    i.setNext(new Arc(i.focus,i));
-
+                    Arc dupArc = new Arc(i.focus,i);//duplicate of i with previous pointing back to original i
+                    i.setNext(dupArc);
                 }
-                i.getNext().setSegRight(i.getSegRight());
+                Arc inext=i.getNext();
+                if(i.getSegRight()!=null) {
+                    inext.setSegRight(new Segment(i.getSegRight().Start));
+                }
                 //add p between i and i next
-                i.getNext().setPrev(new Arc(e.getLocation(),i,i.getNext()));
-                i.setNext(i.getNext().getPrev());
-                i=i.getNext();// i points to new arc
+                Arc newArc = new Arc(e.getLocation(),i,inext);
+                inext.setPrev(newArc);
+                i.setNext(newArc);
+                i=newArc;// i points to new arc
 
 
                  // Add new half-edges connected to i's endpoints.
@@ -128,38 +139,19 @@ public class VoronoiDiagram {
 
                 return;
             }
-            //if p never intersects an arc then append it to the list
-            Arc s;
-            //System.out.println("New iteration");
-            for(s=root;s!=null;s=s.getNext()) {//get to end of list
-                //System.out.println(z.toString());
-            }
-            //z.setNext(new Arc(e.getLocation(),z));
-            /*
-            // Insert segment between p and i
-            point start;
-            start.x = X0;
-            start.y = (i->next->p.y + i->p.y) / 2;
-            i->s1 = i->next->s0 = new seg(start);
-             */
 
         }
 
-
-
-
-        //no intersection detected, add arc to end of linked list
-        for(Arc i=root; i!=null;i=i.getNext()){
-            //System.out.println(i.toString());
-            if (i.getNext()==null){
-                i.setNext(new Arc(e.getLocation(),i));
-                break;
-            }
+        //if p never intersects an arc then append it to the list
+        Arc s;
+        //System.out.println("New iteration");
+        for(s=root;s.getNext()!=null;s=s.getNext()) {//get to end of list
+            //System.out.println(s.toString());
         }
+        s.setNext(new Arc(e.getLocation(),s));
 
 
-
-        }
+    }
 
     private void ProcessEvent(Event e){
         if(e.valid){
@@ -178,12 +170,12 @@ public class VoronoiDiagram {
             if (a.getSegLeft()!=null){
                 a.getSegLeft().setEnd(e.getLocation());
                 segmentList.add(a.getSegLeft());
-                System.out.println("Process Finishing Segment Left "+a.getSegLeft().toString());
+                System.out.println("Process Event added Segment Left "+a.getSegLeft().toString()+" from event "+e.toString());
             }
             if (a.getSegRight()!=null){
                 a.getSegRight().setEnd(e.getLocation());
                 segmentList.add(a.getSegRight());
-                System.out.println("Process Finishing segment Right "+a.getSegRight().toString());
+                System.out.println("Process Event added segment Right "+a.getSegRight().toString()+" from event "+e.toString());
             }
 
 
@@ -198,7 +190,7 @@ public class VoronoiDiagram {
     }
 
 
-    private void checkCircleEvent(Arc i, double x0){
+    private boolean checkCircleEvent(Arc i, double x0){
         //invalidate any old event
         if(i.getE()!=null && i.getE().location.getX()!=x0){
             i.getE().setValid(false);
@@ -206,7 +198,7 @@ public class VoronoiDiagram {
         }
         //i.setEventNull();
         if(i.getPrev()==null||i.getNext()==null){
-            return;
+            return false;
         }
         float x;
         Point o;
@@ -214,19 +206,21 @@ public class VoronoiDiagram {
         o=cc.getCenter();
         x=cc.highestX;
         //System.out.println("Cirle is valid "+cc.valid());
-        if(cc.valid()||true && x>x0){//TODO remove TRUE from IF evaluation
+        if(cc.valid() && x>x0){//TODO remove TRUE from IF evaluation
             i.setE(new Event(x,o,i,cc));
             Q.add(i.getE());
+            return true;
         }
+        return false;
     }
 
 
     private void finishEdges(){
-        float l = 4000;
+        float l = X1+(X1-X0)+(Y1-Y0);
         for(Arc i=root;i.getNext()!=null;i=i.getNext()){
             if(i.getSegRight()!=null){
-                i.getSegRight().setEnd(VoronoiCalcs.parabolaIntersection(i.focus,i.getNext().focus,2*l));
-                //segmentList.add(i.getSegRight());
+                i.getSegRight().setEnd(VoronoiCalcs.parabolaIntersection(i.focus,i.getNext().focus,l*2));
+                segmentList.add(i.getSegRight());
                 System.out.println("Finish segment added"+i.getSegRight().toString());
             }
         }
