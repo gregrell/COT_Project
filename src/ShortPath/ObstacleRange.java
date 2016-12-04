@@ -47,9 +47,9 @@ class ObstacleRange {
         PointObstacle a = new PointObstacle (200,200);
         PointObstacle b = new PointObstacle (400,250);
         PointObstacle c = new PointObstacle (300,500);
-        a.setRoot(new Point(200,200));
+        a.setRoot(new Point(700,400));
         b.setRoot(new Point(400,250));
-        c.setRoot(new Point(300,500));
+        c.setRoot(new Point(300,600));
 
         Points.clear();
         Points.add(a);

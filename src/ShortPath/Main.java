@@ -2,10 +2,7 @@ package ShortPath;
 
 import COT5405.COTIOStream;
 import VVComplex.VisibilityGraph;
-import Voronoi.Arc;
-import Voronoi.Event;
-import Voronoi.Segment;
-import Voronoi.VoronoiDiagram;
+import Voronoi.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -179,8 +176,9 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
             ///Generate Voronoi diagram object
             //System.out.println("Range obstacles "+range.getObstacles());
-            VoronoiDiagram Vor = new VoronoiDiagram(range.getObstacles(),gc);
-            for(Segment seg:Vor.getSegmentList()){
+            //VoronoiDiagram Vor = new VoronoiDiagram(range.getObstacles(),gc);
+            Voronoi2 Vor2 = new Voronoi2(range.getObstacles(),gc);
+            for(Segment seg:Vor2.getSegmentList()){
                 System.out.println("Edges Drawn "+seg.toString());
 
                 Edge e=seg.toEdge();
@@ -190,8 +188,6 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
                 gc.strokeLine(e.p1.x,e.p1.y,e.p2.x,e.p2.y);
             }
-
-
         }
 
 /* END OF OBSTACLE GENERATOR EVENT HANDLER*/

@@ -111,6 +111,13 @@ public class Arc {
         this.e=null;
     }
 
+    public static Arc clone(Arc original){
+        Arc cloned = new Arc(original.focus,original.getPrev(),original.getNext());
+        cloned.setSegRight(original.getSegRight());
+        cloned.setSegLeft(original.getSegLeft());
+        return cloned;
+    }
+
     @Override
     public String toString() {
         return "Arc{" +

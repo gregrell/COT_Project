@@ -10,9 +10,10 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 /**
- * Created by gregrell on 11/21/16.
+ * Created by gregrell on 12/4/16.
  */
-public class VoronoiDiagram {
+public class Voronoi2 {
+
     PriorityQueue Q;
     Arc root;
     List<Segment> segmentList = new ArrayList<Segment>();
@@ -21,7 +22,7 @@ public class VoronoiDiagram {
 
 
 
-    public VoronoiDiagram(List<Obstacle> Obstacles, GraphicsContext gc){
+    public Voronoi2(List<Obstacle> Obstacles, GraphicsContext gc){
         this.gc=gc;
         Q = new PriorityQueue(); //construct a priority queue and put all points in it, it will pop with X in increasing order
         for(Obstacle o:Obstacles){
@@ -30,7 +31,7 @@ public class VoronoiDiagram {
         }
 
         construct();
-        finishEdges();
+        //finishEdges();
 
 
 
@@ -80,7 +81,7 @@ public class VoronoiDiagram {
                 gc.setStroke(Color.VIOLET);
                 gc.setFill(Color.VIOLET);
 
-               // gc.strokeText(removed.getLocation().toString(),removed.getLocation().getX()-5,removed.getLocation().getY()-5);//circle point text
+                // gc.strokeText(removed.getLocation().toString(),removed.getLocation().getX()-5,removed.getLocation().getY()-5);//circle point text
                 //gc.fillRect(removed.getLocation().getX(),removed.getLocation().getY(),2,2);//circle center point fill
 
 
@@ -99,136 +100,75 @@ public class VoronoiDiagram {
         //System.out.println("New Iteration");
 
         for(Arc i=root; i!=null;i=i.getNext()){//traverse linked list
-            //if intersect
-            Point z = new Point(0,0);
-            Point zz= new Point(0,0);
-            if(VoronoiCalcs.Intersects(e.getLocation(),i,z)){
-                if(i.getNext()!=null && !VoronoiCalcs.Intersects(e.getLocation(),i.getNext(),zz)){
-
-                    i.getNext().setPrev(new Arc(i.focus,i,i.getNext()));
-                    i.setNext(i.getNext().getPrev());
+            //find an arc that the new site event intersects with
+            Point intersectPt=new Point(0,0);
+            if(VCalcs.Intersects(e.getLocation(),i,intersectPt)){
+                //it intersects here, check if the arc is connected to a circle event. If so then remove that event from the Q
+                if(!(i.getE() instanceof SiteEvent)){
+                    Q.remove(i.getE());
                 }
-                else{
-                    Arc dupArc = new Arc(i.focus,i);//duplicate of i with previous pointing back to original i
-                    i.setNext(dupArc);
-                }
-                Arc inext=i.getNext();
-                if(i.getSegRight()!=null) {
-                    inext.setSegRight(new Segment(i.getSegRight().Start));
-                }
-                //add p between i and i next
-                Arc newArc = new Arc(e.getLocation(),i,inext);
-                inext.setPrev(newArc);
-                i.setNext(newArc);
-                i=newArc;// i points to new arc
+                //create three new arcs a,b,c
+                Arc a,c;
+                Arc b = new Arc(e.location,e.location.getX(),e);
+                a=Arc.clone(i);
+                c=Arc.clone(i);
+                Segment xl=new Segment(intersectPt);
+                Segment xr=new Segment(intersectPt);
+                //replace i by the sequence a, xl, b, xr, c
+                a.setSegLeft(xl);
+                b.setSegLeft(xl);
+                b.setSegRight(xr);
+                c.setSegRight(xr);
+
+                a.setNext(b);
+                c.setPrev(b);
+                b.setNext(c);
+                b.setPrev(a);
+
+                Arc iPrev = i.getPrev();
+                Arc iNext = i.getNext();
+                i.prev.setNext(a);
+                i.next.setPrev(c);
+                checkCircleEvent(a);
+                checkCircleEvent(c);
 
 
-                 // Add new half-edges connected to i's endpoints.
-                 //i->prev->s1 = i->s0 = new seg(z);
-                i.getPrev().setSegRight(new Segment(z));
-                 //i->next->s0 = i->s1 = new seg(z);
-                i.getNext().setSegLeft(new Segment(z));
-
-                //System.out.println(z.toString()+"segment added");
-
-
-                // Check for new circle events around the new arc:
-                checkCircleEvent(i, e.x);
-                checkCircleEvent(i.getPrev(), e.x);
-                checkCircleEvent(i.getNext(), e.x);
-
-                return;
             }
 
-        }
 
-        //if p never intersects an arc then append it to the list
-        Arc s;
-        //System.out.println("New iteration");
-        for(s=root;s.getNext()!=null;s=s.getNext()) {//get to end of list
-            //System.out.println(s.toString());
-        }
-        s.setNext(new Arc(e.getLocation(),s));
-        Point start = new Point(X0,0);
-        start.setY((s.focus.getY()+s.getNext().focus.getY()) / 2);
-        Segment newSeg = new Segment(start);
-        s.getNext().setSegLeft(newSeg);
-        s.setSegRight(newSeg);
 
+        }
 
     }
 
     private void ProcessEvent(Event e){
-        if(e.valid){
-            Segment s = new Segment(e.getLocation());
-            Arc a = e.getArc();
-            if(a.getPrev()!=null){
-                a.getPrev().setNext(a.getNext());
-                a.getNext().setSegRight(s);
-                //a.getNext().setSegLeft(s);
-            }
-            if(a.getNext()!=null){
-                a.getNext().setPrev(a.getPrev());
-                a.getNext().setSegLeft(s);
-                //a.getNext().setSegRight(s);
-            }
 
-            // Finish the edges before and after a.
-            if (a.getSegLeft()!=null){
-                a.getSegLeft().setEnd(e.getLocation());
-                segmentList.add(a.getSegLeft());
-                System.out.println("Process Event added Segment Left "+a.getSegLeft().toString()+" from event "+e.toString());
-            }
-            if (a.getSegRight()!=null){
-                a.getSegRight().setEnd(e.getLocation());
-                segmentList.add(a.getSegRight());
-                System.out.println("Process Event added segment Right "+a.getSegRight().toString()+" from event "+e.toString());
-            }
-
-
-            // Recheck circle events on either side of p:
-            if (a.getPrev()!=null) checkCircleEvent(a.getPrev(), e.x);
-            if (a.getNext()!=null) checkCircleEvent(a.getNext(), e.x);
-
-        }
-        //System.out.println(e.toString()+" event was not valid");
-        //delete e;
-        //remove e from anywhere in the arc list
-        removeEvent(e);
 
     }
 
-    private void removeEvent(Event e){
-        for(Arc a=root;a.getNext()!=null;a=a.getNext()){
-            if(a.getE()==e){
-                a.setE(null);
-            }
-        }
-    }
 
 
-    private boolean checkCircleEvent(Arc i, double x0){
-        //invalidate any old event
-        if(i.getE()!=null && i.getE().location.getX()!=x0){
-            i.getE().setValid(false);
-            i.setEventNull();
+    private void checkCircleEvent(Arc p){
+        //l is arc on left of p;
+        Arc l = p.getPrev();
+        //r is arc on right of p
+        Arc r = p.getNext();
+        //if l or r are attached to any circle events then remove them from Q
+        if(!(l.getE() instanceof SiteEvent)){
+            Q.remove(l.getE());
         }
-        //i.setEventNull();
-        if(i.getPrev()==null||i.getNext()==null){
-            return false;
+        if(!(r.getE() instanceof SiteEvent)){
+            Q.remove(r.getE());
         }
-        float x;
-        Point o;
-        Circumcircle cc = new Circumcircle(i.prev.focus,i.focus,i.next.focus);
-        o=cc.getCenter();
-        x=cc.highestX;
-        //System.out.println("Cirle is valid "+cc.valid());
-        if(cc.valid() && x>x0){//TODO remove TRUE from IF evaluation
-            i.setE(new Event(x,o,i,cc));
-            Q.add(i.getE());
-            return true;
+
+        //xl and xr are edges by the p
+        Segment xl = p.segLeft;
+        Segment xr = p.segRight;
+        if(xl==null||xr==null) {//missing if xl.site==xr.site
+            return;
         }
-        return false;
+
+
     }
 
 
@@ -251,7 +191,7 @@ public class VoronoiDiagram {
 https://www.cs.hmc.edu/~mbrubeck/voronoi.html
  */
 
-class VoronoiCalcs{
+class VCalcs{
 
     public static boolean Intersects (Point p, Arc i, Point result){
         //Point result = new Point(0,0);
@@ -319,3 +259,7 @@ class VoronoiCalcs{
         return result;
     }
 }
+
+
+
+
