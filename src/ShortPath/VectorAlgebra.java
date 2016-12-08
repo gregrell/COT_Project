@@ -163,14 +163,14 @@ public class VectorAlgebra {
         double distCB = distance2pts(c,b);
         double distAB = distance2pts(a,b);
         //doing a floating point comparison requires getting the integer value to three decimal places and comparing those components
-        distAB=distAB*1000;
-        distAC=distAC*1000;
-        distCB=distCB*1000;
+        distAB=distAB*10;
+        distAC=distAC*10;
+        distCB=distCB*10;
 
-        //System.out.println("Distance AC "+distAC+" Distance CB "+distCB+" Distance AB "+distAB+" Distance AC to CB "+(distAC+distCB));
+        //System.out.println("Distance AC "+(int)distAC+" Distance CB "+(int)distCB+" Distance AB "+(int)distAB+" Distance AC to CB "+(int)(distAC+distCB));
 
 
-        return ((int)(distAC+distCB)==(int)(distAB));
+        return ((int)(distAC+distCB)==(int)(distAB)||(int)(distAB+distCB)==(int)distAC);
     }
 
 

@@ -1,7 +1,11 @@
 package ShortPath;
 
+import Voronoi3.Triangle;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by Greg on 11/12/2016.
@@ -10,6 +14,10 @@ public class Edge implements Serializable{
     public Point p1 = new Point(-1,-1);
     public Point p2 = new Point(-1,-1);
     public ABCform ABC;
+    public boolean incident=false;
+    public Triangle owner;
+    public List<Triangle> sharerList = new ArrayList<Triangle>();
+
 
 
     public Edge(Point p1, Point p2){
@@ -28,6 +36,34 @@ public class Edge implements Serializable{
 
     public ABCform getABC() {
         return ABC;
+    }
+
+    public boolean isIncident() {
+        return incident;
+    }
+
+    public boolean isEqual(Edge compare){
+        return ((this.getP1().comparedTo(compare.getP1())&&this.getP2().comparedTo(compare.getP2())) || (this.getP1().comparedTo(compare.getP2())&&this.getP2().comparedTo(compare.getP1())));
+    }
+
+    public void setIncident(boolean incident) {
+        this.incident = incident;
+    }
+
+    public Triangle getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Triangle owner) {
+        this.owner = owner;
+    }
+
+    public void addSharer(Triangle sharer){
+        sharerList.add(sharer);
+    }
+
+    public List<Triangle> getSharerList() {
+        return sharerList;
     }
 
     @Override

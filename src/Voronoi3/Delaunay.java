@@ -14,11 +14,13 @@ import java.util.List;
 public class Delaunay {
     List<Point> Points;
     List<Triangle> Triangles = new ArrayList<Triangle>();
+    List<Edge> Edges = new ArrayList<Edge>();
+    List<Edge> nonIncidentEdges = new ArrayList<Edge>();
 
     public Delaunay(List<Point> Points){
         this.Points=Points;
         compile();
-
+        setTriangleIncidentEdges();
     }
 
     public void compile(){
@@ -60,16 +62,13 @@ public class Delaunay {
 
                         }
 
-                        if(!alreadyExists) {
-                            System.out.println("add triangle "+newTriangle.toString());
+                        if(!alreadyExists&& !newTriangle.isColinear()) {
+                            //System.out.println("add triangle "+newTriangle.toString());
                             Triangles.add(newTriangle);
                         }
 
                     }
                     else; //System.out.println("point exists in circle "+newCircle.toString());
-
-
-
 
                 }
             }
@@ -83,12 +82,51 @@ public class Delaunay {
     }
 
     public List<Edge> getEdges(){
-        List<Edge> edges = new ArrayList<Edge>();
         for(Triangle t:Triangles){
-            edges.addAll(java.util.Arrays.asList(t.Edges()));
+            for(Edge e:t.Edges()){
+                boolean exists=false;
+                for(Edge edgelistE:Edges){
+                    if(e.isEqual(edgelistE)) exists=true;
+                }
+                //System.out.println(e.getOwner());
+                if(!exists) Edges.add(e);
+                if(!e.isIncident()) nonIncidentEdges.add(e);
+            }
+
         }
-        return edges;
+        return Edges;
     }
+
+    public List<Edge> getNonIncidentEdges() {
+        return nonIncidentEdges;
+    }
+
+    private void setTriangleIncidentEdges(){
+        for(Triangle t1:Triangles){
+            for(Triangle t2:Triangles){
+                if(t1==t2) continue;
+                for(Edge t2Edge:t2.Edges()){
+                    for(Edge t1Edge:t1.Edges()){
+                        if(t2Edge.isEqual(t1Edge)){
+                            t1Edge.setIncident(true);
+                            t1Edge.addSharer(t2Edge.getOwner());
+                            t2Edge.setIncident(true);
+                            t2Edge.addSharer(t1Edge.getOwner());
+                        }
+                    }
+                }
+
+
+            }
+        }
+    }
+
+
+
+
+
+
+
 }
 
 

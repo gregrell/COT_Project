@@ -1,9 +1,6 @@
 package Voronoi3;
 
-import ShortPath.Obstacle;
-import ShortPath.Point;
-import ShortPath.PointObstacle;
-import ShortPath.debug;
+import ShortPath.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +28,21 @@ public class Main {
         Points.add(d);
 
 
-        Voronoi3 VD = new Voronoi3(Points);
+        //Voronoi3 VD = new Voronoi3(Points);
         //System.out.println(VD.getDG().getEdges());
+
+        //colinear test
+        Point p1 = new Point(153,404);
+        Point p2 = new Point(342,515);
+        Point p3 = new Point(741,747);
+
+        System.out.println(VectorAlgebra.onSegment(p1,p2,p3));
+
+        System.out.println(VectorAlgebra.distance2pts(p1,p2));
+        System.out.println(VectorAlgebra.distance2pts(p2,p3));
+        System.out.println(VectorAlgebra.distance2pts(p1,p2)+VectorAlgebra.distance2pts(p2,p3));
+        System.out.println(VectorAlgebra.distance2pts(p1,p3));
+
 
 
 

@@ -1,5 +1,6 @@
 package Voronoi3;
 
+import ShortPath.Edge;
 import ShortPath.Obstacle;
 import ShortPath.Point;
 import Voronoi.VoronoiDiagram;
@@ -13,6 +14,7 @@ import java.util.List;
 public class Voronoi3 {
     private List<Obstacle> ObstaclesIn;
     Delaunay DG;
+    public List<Edge> edges = new ArrayList<Edge>();
 
     public Voronoi3(List<Obstacle> Obstacles){
         this.ObstaclesIn=Obstacles;
@@ -22,6 +24,7 @@ public class Voronoi3 {
         }
 
         DG = new Delaunay(ObstaclePoints);
+        compileEdges();
 
     }
 
@@ -35,6 +38,21 @@ public class Voronoi3 {
 
     public Delaunay getDG() {
         return DG;
+    }
+
+    private void compileEdges(){
+        for(Triangle tri:DG.getTriangles()){
+            for(Edge e:tri.Edges()){
+                if(e.isIncident()){
+
+                    edges.add(new Edge(e.getOwner().getCircumCenter(),e.getSharerList().get(0).getCircumCenter()));
+                }
+            }
+        }
+    }
+
+    public List<Edge> getEdges() {
+        return edges;
     }
 }
 

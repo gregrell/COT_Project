@@ -2,7 +2,6 @@ package ShortPath;
 
 import COT5405.COTIOStream;
 import VVComplex.VisibilityGraph;
-import Voronoi.*;
 import Voronoi3.Voronoi3;
 import Voronoi3.*;
 import javafx.application.Application;
@@ -26,8 +25,8 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
     private static final int viewWidth = 1400;
     private static final int viewHeight = 1050;
-    private static final int gridsize = 1000;
-    private static final int numObstacles = 10;
+    private static final int gridsize = 800;
+    private static final int numObstacles = 90;
     public static final int MaxObstacleSize=gridsize/10;
     private static final Color gridColor = Color.DARKBLUE;
     private static final Color fontColor = Color.WHITE;
@@ -185,24 +184,75 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
             for(Point p:Vor3.getPoints()){// Draw the point obstacles
                 gc.fillRect(p.getX(),p.getY(),3,3);
-                gc.strokeText(p.toString(),p.getX(),p.getY());
+                //gc.strokeText(p.toString(),p.getX(),p.getY());
             }
 
 
-            for(Edge e:Vor3.getDG().getEdges()){ //Draw all the edges of the Delaunay triangles
+            for(Edge e:Vor3.getDG().getEdges()){ //Draw all the edges of the Delaunay triangles that are incident
                 //System.out.println("Edges Drawn "+seg.toString());
 
                 //Edge e=seg.toEdge();
-                gc.setStroke(Color.RED);
+                if(e.isIncident()){
+                    gc.setStroke(Color.CYAN);
+                    //gc.strokeLine(e.p1.x,e.p1.y,e.p2.x,e.p2.y);
+                }
+                //else gc.setStroke(Color.RED);
+            }
 
 
+
+            for(Edge e:Vor3.getDG().getNonIncidentEdges()){ //Draw all the edges of the Delaunay triangles that are not incident
+
+
+                //Edge e=seg.toEdge();
+                if(e.isIncident()){
+                    //gc.setStroke(Color.CYAN);
+                }
+                else{
+                    gc.setStroke(Color.RED);
+                    //System.out.println("x = "+e.getP1()+" y = "+ e.getP2());
+                    //gc.strokeLine(e.p1.x,e.p1.y,e.p2.x,e.p2.y);
+                }
+            }
+
+            gc.setFill(Color.LAWNGREEN);
+
+            gc.setStroke(Color.RED);
+
+
+            for(Triangle trg:Vor3.getDG().getTriangles()){//draw all triangles from the DG that contain a non-incident edge
+                boolean containsnonIncident=false;
+                for(Edge e:trg.Edges()){
+                    if(!e.isIncident()) containsnonIncident=true;
+                }
+                if(containsnonIncident){
+                    //System.out.println("contains non incident edge "+trg.hashCode()+"  "+trg.toString());
+                    //gc.setStroke(Color.WHITE);
+
+                    //gc.strokeText(Integer.toString(trg.hashCode()),trg.getCircumCenter().getX(),trg.getCircumCenter().getY());
+                    for(Edge e:trg.Edges()){
+
+                        gc.setStroke(Color.RED);
+
+                        //gc.strokeLine(e.p1.x,e.p1.y,e.p2.x,e.p2.y);
+                    }
+
+                }
+
+                //gc.fillRect(trg.getCircumCenter().getX(),trg.getCircumCenter().getY(),5,5);
+
+            }
+
+            //Draw the Voronoi edges
+            gc.setStroke(Color.LAWNGREEN);
+
+            for(Edge e:Vor3.getEdges()){
                 gc.strokeLine(e.p1.x,e.p1.y,e.p2.x,e.p2.y);
-            }
 
-            //Draw the Voronoi vertices
-            for(Triangle trg:Vor3.getDG().getTriangles()){
 
             }
+
+
 
 
         }
