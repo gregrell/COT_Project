@@ -4,6 +4,7 @@ import COT5405.COTIOStream;
 import VVComplex.VisibilityGraph;
 import Voronoi.*;
 import Voronoi3.Voronoi3;
+import Voronoi3.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,7 +27,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
     private static final int viewWidth = 1400;
     private static final int viewHeight = 1050;
     private static final int gridsize = 1000;
-    private static final int numObstacles = 5;
+    private static final int numObstacles = 10;
     public static final int MaxObstacleSize=gridsize/10;
     private static final Color gridColor = Color.DARKBLUE;
     private static final Color fontColor = Color.WHITE;
@@ -146,7 +147,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
 
             // paint the obstacles on the view
-
+/*************************************************************************************************************
             for (Obstacle O:range.getObstacles()) {
                 if(O instanceof PointObstacle){
                     //gc.fillRect(O.getRoot().x*(xratio),O.getRoot().y,4*(yratio),4);
@@ -164,6 +165,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
                     gc.strokePolygon(xpoints,ypoints,p.getHull().size());
                 }
             }
+**************************************************************************************************************/
 
             gc.setFill(Color.RED);
             gc.setStroke(Color.RED);
@@ -173,6 +175,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             //System.out.println("Range obstacles "+range.getObstacles());
             //VoronoiDiagram Vor = new VoronoiDiagram(range.getObstacles(),gc);
             //Voronoi2 Vor2 = new Voronoi2(range.getObstacles(),gc);
+
             Voronoi3 Vor3 = new Voronoi3(range.getObstacles());
             System.out.println(Vor3.getDG().getTriangles().size());
 
@@ -180,17 +183,13 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             gc.setFill(Color.WHITE);
             gc.setStroke(Color.WHITE);
 
-
-
-            for(Point p:Vor3.getPoints()){
+            for(Point p:Vor3.getPoints()){// Draw the point obstacles
                 gc.fillRect(p.getX(),p.getY(),3,3);
                 gc.strokeText(p.toString(),p.getX(),p.getY());
             }
 
 
-
-
-            for(Edge e:Vor3.getDG().getEdges()){
+            for(Edge e:Vor3.getDG().getEdges()){ //Draw all the edges of the Delaunay triangles
                 //System.out.println("Edges Drawn "+seg.toString());
 
                 //Edge e=seg.toEdge();
@@ -199,6 +198,13 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
                 gc.strokeLine(e.p1.x,e.p1.y,e.p2.x,e.p2.y);
             }
+
+            //Draw the Voronoi vertices
+            for(Triangle trg:Vor3.getDG().getTriangles()){
+
+            }
+
+
         }
 
 /* END OF OBSTACLE GENERATOR EVENT HANDLER*/
