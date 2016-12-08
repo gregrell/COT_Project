@@ -47,6 +47,10 @@ public class Point implements Serializable, Comparable{
         return new Point (-x,-y);
     }
 
+    public boolean comparedTo(Point testPt){
+        return(this.getX()==testPt.getX() && this.getY()==testPt.getY());
+    }
+
     @Override
     public String toString() {
         return "Point{" +
@@ -57,7 +61,10 @@ public class Point implements Serializable, Comparable{
 
     @Override
     public int compareTo(Object o) {
+        if(this.getX()!=((Point)o).getX()) {
+            return Float.compare(this.getX(), ((Point) o).getX());
+        }
+        else return Float.compare(this.getY(), ((Point)o).getY());
 
-        return Float.compare(this.getX(),((Point)o).getX());
     }
 }

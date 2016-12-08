@@ -3,6 +3,7 @@ package ShortPath;
 import COT5405.COTIOStream;
 import VVComplex.VisibilityGraph;
 import Voronoi.*;
+import Voronoi3.Voronoi3;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -165,25 +166,35 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             }
 
             gc.setFill(Color.RED);
-/*
-            Arc a= new Arc (new Point(300,300),301,new Event(new Point(0,0)));
-
-            for (Point p:a.getSweep()){
-                gc.fillRect(p.x*(xratio),p.y,2*(yratio),2);
-            }*/
             gc.setStroke(Color.RED);
 
 
             ///Generate Voronoi diagram object
             //System.out.println("Range obstacles "+range.getObstacles());
             //VoronoiDiagram Vor = new VoronoiDiagram(range.getObstacles(),gc);
-            Voronoi2 Vor2 = new Voronoi2(range.getObstacles(),gc);
-            for(Segment seg:Vor2.getSegmentList()){
-                System.out.println("Edges Drawn "+seg.toString());
+            //Voronoi2 Vor2 = new Voronoi2(range.getObstacles(),gc);
+            Voronoi3 Vor3 = new Voronoi3(range.getObstacles());
+            System.out.println(Vor3.getDG().getTriangles().size());
 
-                Edge e=seg.toEdge();
+
+            gc.setFill(Color.WHITE);
+            gc.setStroke(Color.WHITE);
+
+
+
+            for(Point p:Vor3.getPoints()){
+                gc.fillRect(p.getX(),p.getY(),3,3);
+                gc.strokeText(p.toString(),p.getX(),p.getY());
+            }
+
+
+
+
+            for(Edge e:Vor3.getDG().getEdges()){
+                //System.out.println("Edges Drawn "+seg.toString());
+
+                //Edge e=seg.toEdge();
                 gc.setStroke(Color.RED);
-                gc.setFill(Color.RED);
 
 
                 gc.strokeLine(e.p1.x,e.p1.y,e.p2.x,e.p2.y);

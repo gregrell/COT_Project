@@ -3,6 +3,7 @@ package Voronoi;
 import ShortPath.Point;
 import ShortPath.VectorAlgebra;
 
+import static ShortPath.VectorAlgebra.distance2pts;
 import static Voronoi.CircleCalcs.*;
 
 /**
@@ -76,6 +77,22 @@ public class Circumcircle {
         return valid;
     }
 
+    public boolean inCircle(Point check){
+        double delta = VectorAlgebra.distance2pts(check,center);
+        if((int)delta<(int)radius)
+        //System.out.println("test point "+check.toString()+" is "+delta+" and radius is "+radius+" result is "+(delta<radius));
+        //System.out.println("Circle A "+A+" B "+B+" C "+C);
+        if(Double.isNaN(delta)){
+            return true;
+        }
+
+        return (delta<radius);
+    }
+
+    public boolean compareTo(Circumcircle compare){
+        return (this.A.comparedTo(compare.getA())&&this.B.comparedTo(compare.getB())&&this.C.comparedTo(compare.getC()));
+    }
+
     private void checkValidity(){
         /*
         // Check that bc is a "right turn" from ab.
@@ -141,9 +158,9 @@ class CircleCalcs{//class of static calls
         return partial/2;*/
         //float radius = radius(A,B,C);
         //return (float)(Math.PI*Math.pow(radius,2));
-        double a = VectorAlgebra.distance2pts(C,B);
-        double b = VectorAlgebra.distance2pts(A,C);
-        double c = VectorAlgebra.distance2pts(B,A);
+        double a = distance2pts(C,B);
+        double b = distance2pts(A,C);
+        double c = distance2pts(B,A);
         /*float area=Tarea(A,B,C);
         System.out.println("a= "+a+" b= "+b+" c="+c);
         System.out.println("4xarea = "+4*area);
@@ -166,9 +183,9 @@ class CircleCalcs{//class of static calls
 
 
     public static float radius(Point A, Point B, Point C){//find radius of circumcircle given three points
-        double a = VectorAlgebra.distance2pts(C,B);
-        double b = VectorAlgebra.distance2pts(A,C);
-        double c = VectorAlgebra.distance2pts(B,A);
+        double a = distance2pts(C,B);
+        double b = distance2pts(A,C);
+        double c = distance2pts(B,A);
 
 
         float s = (float)(a+b+c)/2;
