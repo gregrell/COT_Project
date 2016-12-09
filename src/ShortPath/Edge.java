@@ -1,6 +1,7 @@
 package ShortPath;
 
 import Voronoi3.Triangle;
+import Voronoi3.Vertex;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,6 +20,9 @@ public class Edge implements Serializable{
     public Triangle owner;
     public List<Triangle> sharerList = new ArrayList<Triangle>();
     public float slope;
+    public float length;
+    public Vertex v1;
+    public Vertex v2;
 
 
 
@@ -26,6 +30,7 @@ public class Edge implements Serializable{
         this.p1=p1;
         this.p2=p2;
         calcSlope();
+        setLength();
         //slope=(p1.y-p2.y)/(p1.x-p2.x);
         //ABC=new ABCform(p1,p2);
     }
@@ -78,6 +83,7 @@ public class Edge implements Serializable{
 
         p2.setX(cx);
         p2.setY(cy);
+        setLength();
 
     }
 
@@ -106,11 +112,30 @@ public class Edge implements Serializable{
         return slope;
     }
 
+    private void setLength(){
+        length=(float)VectorAlgebra.distance2pts(p1,p2);
+    }
+
     //public float computeY(float testX){
         //return ABC.computeY(testX);
     //}
 
 
+    public Vertex getV1() {
+        return v1;
+    }
+
+    public void setV1(Vertex v1) {
+        this.v1 = v1;
+    }
+
+    public Vertex getV2() {
+        return v2;
+    }
+
+    public void setV2(Vertex v2) {
+        this.v2 = v2;
+    }
 
     @Override
     public String toString() {

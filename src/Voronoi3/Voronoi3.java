@@ -4,6 +4,7 @@ import ShortPath.*;
 import Voronoi.VoronoiDiagram;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -13,6 +14,8 @@ public class Voronoi3 {
     private List<Obstacle> ObstaclesIn;
     Delaunay DG;
     public List<Edge> edges = new ArrayList<Edge>();
+    //public List<Vertex> vertices = new ArrayList<Vertex>();
+    public Hashtable<String,Vertex> hashtable = new Hashtable<String, Vertex>();
 
     public Voronoi3(List<Obstacle> Obstacles){
         this.ObstaclesIn=Obstacles;
@@ -24,6 +27,8 @@ public class Voronoi3 {
         DG = new Delaunay(ObstaclePoints);
         compileEdges();
         trimEdges();
+        compileVertices();
+        //System.out.println(hashtable.toString());
 
     }
 
@@ -136,6 +141,34 @@ public class Voronoi3 {
 
     public List<Edge> getEdges() {
         return edges;
+    }
+
+    private void compileVertices(){
+        for(Edge e:edges){
+            if(hashtable.containsKey(e.p1.toString())){//consider the first point of edge
+                hashtable.get(e.p1.toString()).edges.add(e); //if the vertex exists in the hash table then add the edge to its edge list
+                e.setV1(hashtable.get(e.p1.toString()));//set the vertex reference for this edge V1 to the vertex found in the hash table
+            }
+            else {
+                Vertex v = new Vertex(e.p1,e); //create a new vertex to be inserted in the hash table
+                hashtable.put(e.p1.toString(),v); // if vertex doesn't exist in the hash table then create it and link the edge to it, then put it in
+                e.setV1(v); // set the edge V1 pointing to the newly created vertex
+            }
+
+            if(hashtable.containsKey(e.p2.toString())){//consider the second point of edge
+                hashtable.get(e.p2.toString()).edges.add(e); //if the vertex exists in the hash table then add the edge to its edge list
+                e.setV2(hashtable.get(e.p2.toString()));
+            }
+            else{
+                Vertex v = new Vertex(e.p2,e); //create a new vertex to be inserted in the hash table
+
+                hashtable.put(e.p2.toString(),v); // if vertex doesn't exist in the hash table then create it and link the edge to it, then put it in
+                e.setV2(v);
+            }
+
+
+        }
+
     }
 }
 
