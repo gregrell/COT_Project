@@ -86,6 +86,15 @@ public class Triangle {
         return colinear;
     }
 
+    public List<Point> getPoints(){
+        List<Point> retVal = new ArrayList<Point>();
+        retVal.add(A);
+        retVal.add(B);
+        retVal.add(C);
+        return retVal;
+
+    }
+
     @Override
     public String toString() {
         return "Triangle{" +

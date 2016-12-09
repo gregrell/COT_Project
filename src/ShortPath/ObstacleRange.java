@@ -24,7 +24,7 @@ class ObstacleRange {
 
     public ObstacleRange(@SuppressWarnings("SameParameterValue") int xSize, @SuppressWarnings("SameParameterValue") int ySize, @SuppressWarnings("SameParameterValue") int numObstacles){
         exists =true;
-        this.xSize=xSize;
+        this.xSize=xSize+500;
         this.ySize=ySize;
         this.numObstacles=numObstacles;
 

@@ -4,6 +4,7 @@ import Voronoi3.Triangle;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -13,17 +14,20 @@ import java.util.List;
 public class Edge implements Serializable{
     public Point p1 = new Point(-1,-1);
     public Point p2 = new Point(-1,-1);
-    public ABCform ABC;
+    //public ABCform ABC;
     public boolean incident=false;
     public Triangle owner;
     public List<Triangle> sharerList = new ArrayList<Triangle>();
+    public float slope;
 
 
 
     public Edge(Point p1, Point p2){
         this.p1=p1;
         this.p2=p2;
-        ABC=new ABCform(p1,p2);
+        calcSlope();
+        //slope=(p1.y-p2.y)/(p1.x-p2.x);
+        //ABC=new ABCform(p1,p2);
     }
 
     public Point getP1() {
@@ -34,9 +38,9 @@ public class Edge implements Serializable{
         return p2;
     }
 
-    public ABCform getABC() {
+    /*public ABCform getABC() {
         return ABC;
-    }
+    }*/
 
     public boolean isIncident() {
         return incident;
@@ -66,6 +70,48 @@ public class Edge implements Serializable{
         return sharerList;
     }
 
+    public void extendP2(float length){
+        /*C.x = B.x + (B.x - A.x) / lenAB * length;
+        C.y = B.y + (B.y - A.y) / lenAB * length;*/
+        float cx=p2.x + (p2.x - p1.x)/length*(float)VectorAlgebra.distance2pts(p1,p2);
+        float cy=p2.y + (p2.y - p1.y)/length*(float)VectorAlgebra.distance2pts(p1,p2);
+
+        p2.setX(cx);
+        p2.setY(cy);
+
+    }
+
+    public float calculateY(float testX){
+        //y-y1=m(x-x1)
+        return(slope*(testX-p1.x))+p1.y;
+
+    }
+
+    public float calculateX(float testY){
+        //y-y1=m(x-x1) therefore x=((y-y1)/m)+x1
+        return(((testY-p1.y)/slope)+p1.x);
+    }
+
+    private void calcSlope(){
+        /*List<Point> segments = new ArrayList<Point>();
+        segments.add(p1);
+        segments.add(p2);
+        Collections.sort(segments);
+        Point A = segments.get(0);
+        Point B = segments.get(1);*/
+        slope=(p2.y-p1.y)/(p2.x-p1.x);
+    }
+
+    public float getSlope() {
+        return slope;
+    }
+
+    //public float computeY(float testX){
+        //return ABC.computeY(testX);
+    //}
+
+
+
     @Override
     public String toString() {
         return "Edge{" +
@@ -78,6 +124,16 @@ public class Edge implements Serializable{
 }
 
 
+
+
+
+
+
+
+
+
+
+/*
 class ABCform implements Serializable {
     float A;
     float B;
@@ -123,9 +179,11 @@ class ABCform implements Serializable {
         return(!(decpart==0));
     }
 
-    public boolean slopeInf(){
+    //public boolean slopeInf(){
         return slopeInf;
     }
+
+
 
 
     @Override
@@ -140,3 +198,4 @@ class ABCform implements Serializable {
 
 
 }
+*/

@@ -63,7 +63,7 @@ public class VectorAlgebra {
 
         return Math.abs(result-360);
     }
-
+/*
     public static Point intersection(Edge e1, Edge e2){
         float x=0;
         float y=0;
@@ -93,8 +93,8 @@ public class VectorAlgebra {
         Point intersectPt= new Point(x,y);
         //System.out.println(intersectPt);
         return intersectPt;
-    }
-
+    }*/
+/*
     public static Point segmentIntersection(Edge e1, Edge e2){
         Point intersectPt=intersection(e1,e2);
         boolean existsL1=false;
@@ -109,8 +109,8 @@ public class VectorAlgebra {
         else
             return new Point(0,0);
 
-    }
-
+    }*/
+/*
     public static Point segmentProperIntersection(Edge e1, Edge e2){
         Point intersectPt=intersection(e1,e2);
         boolean existsL1=false;
@@ -146,7 +146,7 @@ public class VectorAlgebra {
         else
             return new Point(0,0);
 
-    }
+    }*/
 
     public static boolean samePoints(Point p1, Point p2){ // compute if two points are nearly the same with only rounding error differences
         boolean samepts=false;
@@ -171,6 +171,10 @@ public class VectorAlgebra {
 
 
         return ((int)(distAC+distCB)==(int)(distAB)||(int)(distAB+distCB)==(int)distAC);
+    }
+
+    public static Point midpoint(Point a, Point b){
+        return new Point((a.getX()+b.getX())/2,(a.getY()+b.getY())/2);
     }
 
 

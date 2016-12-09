@@ -1,7 +1,7 @@
 package ShortPath;
 
 import COT5405.COTIOStream;
-import VVComplex.VisibilityGraph;
+//import VVComplex.VisibilityGraph;
 import Voronoi3.Voronoi3;
 import Voronoi3.*;
 import javafx.application.Application;
@@ -26,7 +26,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
     private static final int viewWidth = 1400;
     private static final int viewHeight = 1050;
     private static final int gridsize = 800;
-    private static final int numObstacles = 90;
+    private static final int numObstacles = 50;
     public static final int MaxObstacleSize=gridsize/10;
     private static final Color gridColor = Color.DARKBLUE;
     private static final Color fontColor = Color.WHITE;
@@ -46,7 +46,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
     private final Canvas drawingarea = new Canvas();
     private final GraphicsContext gc = drawingarea.getGraphicsContext2D();
     private ObstacleRange range;
-    private VisibilityGraph vg;
+    //private VisibilityGraph vg;
     private List<Obstacle> O;
 
 
@@ -176,7 +176,6 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             //Voronoi2 Vor2 = new Voronoi2(range.getObstacles(),gc);
 
             Voronoi3 Vor3 = new Voronoi3(range.getObstacles());
-            System.out.println(Vor3.getDG().getTriangles().size());
 
 
             gc.setFill(Color.WHITE);
@@ -245,8 +244,11 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
             //Draw the Voronoi edges
             gc.setStroke(Color.LAWNGREEN);
+            //System.out.println(Vor3.getEdges().size());
+
 
             for(Edge e:Vor3.getEdges()){
+                //System.out.println(e);
                 gc.strokeLine(e.p1.x,e.p1.y,e.p2.x,e.p2.y);
 
 
@@ -301,28 +303,6 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
 
         else if(event.getSource()==TempTest2) {
-            //TODO remove this
-            vg=new VisibilityGraph();
-            vg.addObstacles(range.getObstacles());
-            gc.setStroke(Color.WHITE);
-
-            drawEdges(vg.getGraph().getEdges());
-            List<Edge> radialEdges = vg.VisibleVertices(new Point(320,370),range.getObstacles());
-            List<Double> angles = new ArrayList<Double>();
-            angles=vg.getAngles();
-
-            gc.setFill(Color.CYAN);
-
-           /* int i=0;
-            for(Point pt:vg.getV()){
-                gc.fillText(angles.get(i).toString(),pt.getX()*xratio,pt.getY()*yratio);
-                i++;
-            }*/
-            gc.setStroke(Color.CRIMSON);
-            drawEdges(radialEdges);
-
-            gc.setFill(Color.VIOLET);
-            //gc.fillRect(-463*xratio,92*yratio,5,5);
 
 
         }
