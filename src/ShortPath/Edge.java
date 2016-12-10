@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Greg on 11/12/2016.
  */
-public class Edge implements Serializable{
+public class Edge implements Serializable, Comparable{
     public Point p1 = new Point(-1,-1);
     public Point p2 = new Point(-1,-1);
     //public ABCform ABC;
@@ -20,7 +20,7 @@ public class Edge implements Serializable{
     public Triangle owner;
     public List<Triangle> sharerList = new ArrayList<Triangle>();
     public float slope;
-    public float length;
+    public Float length;
     public Vertex v1;
     public Vertex v2;
 
@@ -137,6 +137,10 @@ public class Edge implements Serializable{
         this.v2 = v2;
     }
 
+    public Float getLength() {
+        return length;
+    }
+
     @Override
     public String toString() {
         return "Edge{" +
@@ -145,7 +149,10 @@ public class Edge implements Serializable{
                 '}';
     }
 
-
+    @Override
+    public int compareTo(Object o) {
+        return this.getLength().compareTo(((Edge)o).getLength());
+    }
 }
 
 

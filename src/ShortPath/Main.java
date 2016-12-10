@@ -2,6 +2,7 @@ package ShortPath;
 
 import COT5405.COTIOStream;
 //import VVComplex.VisibilityGraph;
+import Djikstra.Djikstra;
 import Voronoi3.Voronoi3;
 import Voronoi3.*;
 import javafx.application.Application;
@@ -129,6 +130,8 @@ public class Main extends Application implements EventHandler<ActionEvent>{
     @Override
     public void handle(ActionEvent event) {
         /*START OF OBSTACLE GENERATOR EVENTS HANDLER*/
+        gc.setLineWidth(1);
+
         if (event.getSource()==GeneratePolygons) {
             clearCanvas();
             gc.setStroke(Color.WHITE);
@@ -253,6 +256,23 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
 
             }
+            //System.out.println("Number of edges "+Vor3.getEdges().size());
+            //System.out.println("Number of Vertices "+Vor3.getVertices().size());
+
+
+
+            Djikstra djikstra=new Djikstra(Vor3.getVertices(), Vor3.getEdges(), Vor3.getLeftMost());
+
+            for(Edge e:djikstra.pathTo(Vor3.getRightMost())){
+                //System.out.println(e);
+                gc.setStroke(Color.RED);
+                gc.setLineWidth(6);
+
+                gc.strokeLine(e.p1.x,e.p1.y,e.p2.x,e.p2.y);
+
+
+            }
+
 
 
 

@@ -3,9 +3,7 @@ package Voronoi3;
 import ShortPath.*;
 import Voronoi.VoronoiDiagram;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by gregrell on 12/7/16.
@@ -168,6 +166,29 @@ public class Voronoi3 {
 
 
         }
+
+    }
+
+    public List<Vertex> getVertices(){
+        Enumeration en = hashtable.elements();
+        return Collections.list(en);
+    }
+
+    public Vertex getLeftMost(){
+        Enumeration en = hashtable.elements();
+        List<Vertex> vertexList = Collections.list(en);
+        Collections.sort(vertexList);
+
+
+        return vertexList.get(0);
+    }
+
+    public Vertex getRightMost(){
+        Enumeration en = hashtable.elements();
+        List<Vertex> vertexList = Collections.list(en);
+        Collections.sort(vertexList);
+
+        return vertexList.get(vertexList.size()-1);
 
     }
 }

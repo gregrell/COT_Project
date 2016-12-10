@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by gregrell on 12/9/16.
  */
-public class Vertex {
+public class Vertex implements Comparable{
     Point p;
     public List<Edge> edges = new ArrayList<Edge>();
 
@@ -25,5 +25,17 @@ public class Vertex {
 
     public List<Edge> getEdges() {
         return edges;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return this.getP().compareTo(((Vertex)o).getP());
+    }
+
+    @Override
+    public String toString() {
+        return "Vertex{" +
+                "p=" + p +
+                '}';
     }
 }
