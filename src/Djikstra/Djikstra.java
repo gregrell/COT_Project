@@ -74,7 +74,7 @@ public class Djikstra {
         Vertex node=v;
         List<Edge> path = new ArrayList<>();
 
-        while(node!=source){
+        while(node!=source && !(prev.get(node.toString())==node)){
             path.add(prevE.get(node.toString()));
             node=prev.get(node.toString());
         }

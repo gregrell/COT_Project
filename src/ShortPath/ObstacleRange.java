@@ -58,11 +58,11 @@ class ObstacleRange {
         f.setRoot(new Point(600,700));
 
         //Points.clear();
-        Points.add(a);
-        Points.add(b);
-        Points.add(c);
-        Points.add(d);
-        Points.add(e);
+        //Points.add(a);
+        //Points.add(b);
+        //Points.add(c);
+        //Points.add(d);
+        //Points.add(e);
         //Points.add(f);
 
 

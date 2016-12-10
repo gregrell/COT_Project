@@ -27,7 +27,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
     private static final int viewWidth = 1400;
     private static final int viewHeight = 1050;
     private static final int gridsize = 800;
-    private static final int numObstacles = 50;
+    private static final int numObstacles =400;
     public static final int MaxObstacleSize=gridsize/10;
     private static final Color gridColor = Color.DARKBLUE;
     private static final Color fontColor = Color.WHITE;
@@ -178,7 +178,12 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             //VoronoiDiagram Vor = new VoronoiDiagram(range.getObstacles(),gc);
             //Voronoi2 Vor2 = new Voronoi2(range.getObstacles(),gc);
 
+            long VoronoitimeStart = System.currentTimeMillis(); //This method returns the difference, measured in milliseconds, between the current time and midnight, January 1, 1970 UTC(coordinated universal time).
             Voronoi3 Vor3 = new Voronoi3(range.getObstacles());
+            long VoronoitimeStop = System.currentTimeMillis();
+            long VoronoiElapsed = VoronoitimeStop-VoronoitimeStart;
+
+            System.out.println("Voronoi diagram generation took "+VoronoiElapsed+" ms");
 
 
             gc.setFill(Color.WHITE);
@@ -260,8 +265,17 @@ public class Main extends Application implements EventHandler<ActionEvent>{
             //System.out.println("Number of Vertices "+Vor3.getVertices().size());
 
 
-
+            long djikstraTimeStart = System.currentTimeMillis();
             Djikstra djikstra=new Djikstra(Vor3.getVertices(), Vor3.getEdges(), Vor3.getLeftMost());
+            Vor3.getRightMost();
+            long djikstraTimeStop = System.currentTimeMillis();
+            long djikstraTimeElapsed = djikstraTimeStop-djikstraTimeStart;
+
+            System.out.println("Djikstra shortest path calculation took "+djikstraTimeElapsed+" ms");
+
+            long totalAlgorithmTime = VoronoiElapsed+djikstraTimeElapsed;
+
+            System.out.println("Total algorithm time based on "+numObstacles+" Obstacles is "+totalAlgorithmTime+" ms");
 
             for(Edge e:djikstra.pathTo(Vor3.getRightMost())){
                 //System.out.println(e);
